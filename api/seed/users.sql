@@ -1,0 +1,10 @@
+INSERT INTO users (name, username, password_hash) VALUES ('Brittne Reeme', 'breeme0', 'fgO4EB3vqz');
+INSERT INTO users (name, username, password_hash) VALUES ('Theodor Gibson', 'tgibson1', 'hsaWPsPj');
+INSERT INTO users (name, username, password_hash) VALUES ('Jo-anne McKiernan', 'jmckiernan2', 'yQrGdiB8');
+INSERT INTO users (name, username, password_hash) VALUES ('David Geroldini', 'dgeroldini3', 'Jqag4kaelW2M');
+INSERT INTO users (name, username, password_hash) VALUES ('Keene Longshaw', 'klongshaw4', 'nIwG0M');
+INSERT INTO users (name, username, password_hash) VALUES ('Tiffi Dunston', 'tdunston5', 'wxvT3RW2');
+INSERT INTO users (name, username, password_hash) VALUES ('Vladimir Kropach', 'vkropach6', 'yuvZf14p9Q');
+INSERT INTO users (name, username, password_hash) VALUES ('Addie McSorley', 'amcsorley7', 'H3DDOx');
+INSERT INTO users (name, username, password_hash) VALUES ('Lowell Cuer', 'lcuer8', 'GmYxWG9p7gYS');
+INSERT INTO users (name, username, password_hash) VALUES ('Devinne Sandbatch', 'dsandbatch9', 'MxNGTKmn');
