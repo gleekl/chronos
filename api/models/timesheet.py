@@ -20,6 +20,6 @@ class Timesheet(db.Model):
         backref='timesheet',
         cascade='all, delete'
     )
-    date_start = db.Column(db.DateTime, default=datetime)
-    date_end = db.Column(db.DateTime, default=datetime)
-    total_time = db.Column(db.Integer)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    duration = db.Column(db.Integer)
+    name = db.Column(db.String(255))

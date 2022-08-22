@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS activities CASCADE;
+
+CREATE TABLE activities (
+    id SERIAL PRIMARY KEY
+    project_id SERIAL REFERENCES projects (id) ON DELETE CASCADE
+    name TEXT NOT NULL
+)

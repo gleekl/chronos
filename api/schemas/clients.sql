@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS clients CASCADE;
+
+CREATE TABLE clients (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL
+)

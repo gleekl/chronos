@@ -18,4 +18,4 @@ class Project(db.Model):
     )
     date_start = db.Column(db.DateTime, default=datetime)
     date_end = db.Column(db.DateTime, default=datetime)
-    total_time = db.Column(db.Integer)
+    total_DURATION = db.Column(db.Integer)
