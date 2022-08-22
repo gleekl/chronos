@@ -11,6 +11,7 @@ cloudinary = "*"
 flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
