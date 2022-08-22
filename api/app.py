@@ -100,6 +100,32 @@ def projects():
     return jsonify(projects)
 
 # # # # # # # # # # # # # # # # # # # # 
+# NEW PROJECTS 
+# # # # # # # # # # # # # # # # # # # # 
+@app.route('/projects/new', methods=['POST'])
+def new_projects():
+    name = request.form['name']
+    date_start = request.form['date start']
+    date_end = request.form['date end']
+    total_duration = request.form['total duration']
+
+    user = session.get('user', None)
+    if user is None:
+        return jsonify(success=False, msg='You must be logged in to toot.')
+
+    query = """
+        INSERT INTO projects
+        (name, user_id, client_id, date_start, date_end, total_duration)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        RETURNING *
+    """
+
+    g.db['cursor'].execute(query, (name, user['id'], client['id'], date_start, date_end, total_duration))
+    g.db['connection'].commit()
+    project = g.db['cursor'].fetchone()
+    return jsonify(project)
+
+# # # # # # # # # # # # # # # # # # # # 
 # TIMESHEETS 
 # # # # # # # # # # # # # # # # # # # # 
 @app.route('/timesheets')
