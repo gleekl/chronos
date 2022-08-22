@@ -31,7 +31,7 @@ def disconnect_from_db(response):
 @app.route('/users')
 def users():
     query = """
-        SELECT * FROM users
+        SELECT id, name, username FROM users
         ORDER BY id ASC
     """
     g.db['cursor'].execute(query)
@@ -50,6 +50,28 @@ def clients():
     g.db['cursor'].execute(query)
     clients = g.db['cursor'].fetchall()
     return jsonify(clients)
+
+# # # # # # # # # # # # # # # # # # # # 
+# NEW CLIENTS 
+# # # # # # # # # # # # # # # # # # # # 
+@app.route('/clients/new', methods=['POST'])
+def new_client():
+    name = request.form['name']
+    user = session.get('user', None)
+
+    if user is None:
+        return jsonify(success=False, msg='You must be logged in to adda a new client.')
+    
+    query = """
+        INSERT INTO clients
+        (name)
+        VALUES (%s)
+        RETURNING *
+    """
+    g.db['cursor'].execute(query, (name,))
+    g.db['connection'].commit()
+    client = g.db['cursor'].fetchone()
+    return jsonify(client)
 
 # # # # # # # # # # # # # # # # # # # # 
 # ACTIVITIES 
@@ -99,21 +121,17 @@ def register():
     username = request.json['username']
     password = request.json['password']
     password_hash = generate_password_hash(password)
-
     query = """
         INSERT INTO users
         (name, username, password_hash)
         VALUES (%s, %s, %s)
-        returning id, name, username
+        RETURNING id, name, username
     """
-
     cur = g.db['cursor']
-
     try:
         cur.execute(query, (name, username, password_hash))
     except psycopg2.IntegrityError:
         return jsonify(success=False, msg='Username already taken.')
-
     g.db['connection'].commit()
     user = cur.fetchone()
     session['user'] = user
