@@ -8,5 +8,5 @@ CREATE TABLE timesheets (
     activity_id SERIAL REFERENCES activities (id) ON DELETE CASCADE,
     date DATE NOT NULL,
     duration INTEGER NOT NULL,
-    comments TEXT,
+    comments TEXT
 )
