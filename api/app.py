@@ -1,4 +1,14 @@
-from curses import flash
-from flask import Flask, request
+from flask import (
+    Flask,
+    redirect,
+    jsonify,
+    request,
+    g,
+    session
+)
+from werkzeug.security import generate_password_hash, check_password_hash
+import psycopg2
+import os
+import cloudinary.uploader
 
-app = Flask(__name__)
+from .db import get_db, close_db
