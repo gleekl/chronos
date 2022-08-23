@@ -31,8 +31,8 @@ def disconnect_from_db(response):
 @app.route('/users')
 def users():
     query = """
-        SELECT id, name, username FROM users
-        ORDER BY id ASC
+        SELECT id, name, email, phone_number, username 
+        FROM users
     """
     g.db['cursor'].execute(query)
     users = g.db['cursor'].fetchall()
@@ -44,7 +44,8 @@ def users():
 @app.route('/clients')
 def clients():
     query = """
-        SELECT * FROM clients
+        SELECT * 
+        FROM clients
         ORDER BY id ASC
     """
     g.db['cursor'].execute(query)
@@ -79,7 +80,8 @@ def new_client():
 @app.route('/activities')
 def activities():
     query = """
-        SELECT * FROM activities
+        SELECT * 
+        FROM activities
         ORDER BY id ASC
     """
     g.db['cursor'].execute(query)
@@ -92,7 +94,8 @@ def activities():
 @app.route('/projects')
 def projects():
     query = """
-        SELECT * FROM projects
+        SELECT * 
+        FROM projects
         ORDER BY id ASC
     """
     g.db['cursor'].execute(query)
@@ -132,7 +135,8 @@ def new_projects():
 @app.route('/timesheets')
 def timesheets():
     query = """
-        SELECT * FROM timesheets
+        SELECT * 
+        FROM timesheets
         ORDER BY id ASC
     """
     g.db['cursor'].execute(query)
@@ -201,7 +205,8 @@ def login():
     password: request.json['password']
 
     query = """
-        SELECT * FROM users
+        SELECT * 
+        FROM users
         WHERE username = %s
     """
 
