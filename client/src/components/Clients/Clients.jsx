@@ -222,7 +222,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const Timesheets = () => {
+const Clients = () => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -375,4 +375,4 @@ const Timesheets = () => {
   );
 }
 
-export default Timesheets
+export default Clients

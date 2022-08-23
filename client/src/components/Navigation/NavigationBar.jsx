@@ -17,6 +17,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ProfileIcon from '@mui/icons-material/Person';
 import ProjectIcon from '@mui/icons-material/HomeRepairService';
+import UsersIcon from '@mui/icons-material/PeopleOutline';
 import TimeIcon from '@mui/icons-material/AccessTime';
 import ChartIcon from '@mui/icons-material/InsertChart';
 import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
@@ -40,9 +41,14 @@ const navItems = [
         link: "/projects"
     },
     {
+        text: "Users",
+        component: <UsersIcon />,
+        link: "/users"
+    },
+    {
         text: "Timesheets",
         component: <TimeIcon />,
-        link: "/timsheets"
+        link: "/timesheets"
     },
     {
         text: "Reports",
