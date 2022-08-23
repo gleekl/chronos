@@ -1,6 +1,6 @@
 main {
-  position: absolute;
-  left: 240px;
+  position: relative;
+  left: 50px;
 }
 
 .navlink {
