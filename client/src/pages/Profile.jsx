@@ -51,10 +51,10 @@ const Profile = () => (
   </>
 );
 
-// Profile.getLayout = (page) => (
-//   <DashboardLayout>
-//     {page}
-//   </DashboardLayout>
-// );
+Profile.getLayout = (page) => (
+  <DashboardLayout>
+    {page}
+  </DashboardLayout>
+);
 
 export default Profile;
