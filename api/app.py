@@ -105,13 +105,14 @@ def projects():
 @app.route('/projects/new', methods=['POST'])
 def new_projects():
     name = request.form['name']
-    date_start = request.form['date start']
-    date_end = request.form['date end']
-    total_duration = request.form['total duration']
+    client_id = request.form['client_id']
+    date_start = request.form['date_start']
+    date_end = request.form['date_end']
+    total_duration = request.form['total_duration']
 
     user = session.get('user', None)
     if user is None:
-        return jsonify(success=False, msg='You must be logged in to toot.')
+        return jsonify(success=False, msg='You must be logged in to create a new project.')
 
     query = """
         INSERT INTO projects
@@ -120,7 +121,7 @@ def new_projects():
         RETURNING *
     """
 
-    g.db['cursor'].execute(query, (name, user['id'], client['id'], date_start, date_end, total_duration))
+    g.db['cursor'].execute(query, (name, user['id'], client_id, date_start, date_end, total_duration))
     g.db['connection'].commit()
     project = g.db['cursor'].fetchone()
     return jsonify(project)
@@ -137,6 +138,34 @@ def timesheets():
     g.db['cursor'].execute(query)
     timesheets = g.db['cursor'].fetchall()
     return jsonify(timesheets)
+
+# # # # # # # # # # # # # # # # # # # # 
+# NEW TIMESHEETS 
+# # # # # # # # # # # # # # # # # # # # 
+@app.route('/timesheets/new')
+def new_timesheets():
+    client_id = request.form['client_id']
+    project_id = request.form['project_id']
+    activity_id = request.form['activity_id']
+    date = request.form['date']
+    duration = request.form['duration']
+    comments = request.form['comments']
+
+    user = session.get('user', None)
+    if user is None:
+        return jsonify(success=False, msg='You must be logged in to create a new timesheet.')
+
+    query = """
+        INSERT INTO timesheets
+        (user_id, client_id, project_id, activity_id, date, duration, duration)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        RETURNING *
+    """
+
+    g.db['cursor'].execute(query, (user['id'], client_id, project_id, activity_id, date, duration, comments))
+    g.db['connection'].commit()
+    project = g.db['cursor'].fetchone()
+    return jsonify(project)
 
 # # # # # # # # # # # # # # # # # # # # 
 # REGISTER
@@ -178,14 +207,13 @@ def login():
 
     cur = g.db['cursor']
     cur.execute(query, (username,))
-    user = cur.fetchone()
 
+    user = cur.fetchone()
     # Check if user exists.
     if user is None:
         return jsonify(success=False, msg='Username or password is incorrect.')
 
     password_matches = check_password_hash(user['password_hash'], password)
-
     # Check if password matches.
     if not password_matches:
         return jsonify(success=False, msg='Username or password is incorrect.')
