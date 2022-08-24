@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import DashboardLayout from '../components/Navigation/DashboardLayout';
-import ProfileDetails from '../components/Profile/ProfileDetails';
-import ProfileForm from '../components/Profile/ProfileForm';
+import DashboardLayout from '../Navigation/DashboardLayout';
+import ProfileDetails from './ProfileDetails';
+import ProfileForm from './ProfileForm';
 
-const Profile = ({ users }) => {
+const Profile = ({ user }) => {
   // const user = users.find
 
   return (
@@ -39,7 +39,7 @@ const Profile = ({ users }) => {
               md={6}
               xs={12}
             >
-              <ProfileDetails />
+              <ProfileDetails user={user} />
             </Grid>
             <Grid
               item
@@ -47,7 +47,7 @@ const Profile = ({ users }) => {
               md={6}
               xs={12}
             >
-              <ProfileForm />
+              <ProfileForm user={user} />
             </Grid>
           </Grid>
         </Container>

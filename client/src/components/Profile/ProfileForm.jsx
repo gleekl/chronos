@@ -10,13 +10,9 @@ import {
   TextField
 } from '@mui/material';
 
-const ProfileForm = (props) => {
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: ''
-  });
+const ProfileForm = ({ user }) => {
+  console.log(user);
+  const [values, setValues] = useState(user);
 
   const handleChange = (event) => {
     setValues({
@@ -29,7 +25,7 @@ const ProfileForm = (props) => {
     <form
       autoComplete="off"
       noValidate
-      {...props}
+      {...user}
     >
       <Card>
         <CardHeader
@@ -51,11 +47,12 @@ const ProfileForm = (props) => {
                 fullWidth
                 helperText="Please specify the first name"
                 label="First name"
-                name="firstName"
+                name="first_name"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.first_name}
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
               />
             </Grid>
             <Grid
@@ -66,11 +63,12 @@ const ProfileForm = (props) => {
               <TextField
                 fullWidth
                 label="Last name"
-                name="lastName"
+                name="last_name"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.last_name}
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
               />
             </Grid>
             <Grid
@@ -86,6 +84,7 @@ const ProfileForm = (props) => {
                 required
                 value={values.email}
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
               />
             </Grid>
             <Grid
@@ -98,9 +97,10 @@ const ProfileForm = (props) => {
                 label="Phone Number"
                 name="phone"
                 onChange={handleChange}
-                type="number"
+                type="text"
                 value={values.phone}
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
               />
             </Grid>
           </Grid>

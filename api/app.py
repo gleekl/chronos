@@ -34,7 +34,7 @@ def disconnect_from_db(response):
 @app.route('/users')
 def users():
     query = """
-        SELECT id, first_name, last_name, email, phone_number, username 
+        SELECT id, first_name, last_name, email, phone, username 
         FROM users
     """
 
@@ -120,13 +120,15 @@ def update_client(client_id):
     query = """
         UPDATE clients
         SET first_name = %s, last_name = %s, email = %s, phone = %s, company = %s
-        WHERE client.id = %s
+        WHERE clients.id = %s
         RETURNING *
     """
 
     cur = g.db['cursor']
     cur.execute(query, (first_name, last_name, email, phone, company, client_id))
     g.db['connection'].commit() 
+    client = g.db['cursor'].fetchone()
+    return jsonify(client)
 
 # Make new client
 @app.route('/clients/new', methods=['POST'])
@@ -156,6 +158,8 @@ def new_client():
 # # # # # # # # # # # # # # # # # # # # 
 # ACTIVITIES 
 # # # # # # # # # # # # # # # # # # # # 
+
+# List all activities
 @app.route('/activities')
 def activities():
     query = """
@@ -166,6 +170,59 @@ def activities():
     g.db['cursor'].execute(query)
     activities = g.db['cursor'].fetchall()
     return jsonify(activities)
+
+# List selected activity
+@app.route('/activities/<activity_id>')
+def show_activity(activity_id):
+    cur = g.db['cursor']
+
+    query = """
+        SELECT * FROM activities
+        WHERE activities.id = %s
+    """
+
+    cur.execute(query, (activity_id,))
+    activity = cur.fetchone()
+    return jsonify(activity)
+
+# Update selected activity
+@app.route('/activities/<activity_id>', methods=['PUT'])
+def update_activity(activity_id):
+    name = request.json['name']
+
+    query = """
+        UPDATE activities
+        SET name = %s
+        WHERE activities.id = %s
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (name, activity_id))
+    g.db['connection'].commit() 
+    activity = g.db['cursor'].fetchone()
+    return jsonify(activity)
+
+# Make new activity
+@app.route('/activities/new', methods=['POST'])
+def new_activity():
+    name = request.form['first_name']
+
+    user = session.get('user', None)
+    if user is None:
+        return jsonify(success=False, msg='You must be logged in to add a new client.')
+    
+    query = """
+        INSERT INTO activities
+        (name)
+        VALUES (%s)
+        RETURNING *
+    """
+
+    g.db['cursor'].execute(query, (name,))
+    g.db['connection'].commit()
+    client = g.db['cursor'].fetchone()
+    return jsonify(client)
 
 # # # # # # # # # # # # # # # # # # # # 
 # PROJECTS 
@@ -252,8 +309,6 @@ def show_timesheet(timesheet_id):
     timesheet = cur.fetchone()
     return jsonify(timesheet)
 
-
-
 # Create new timesheet
 @app.route('/timesheets/new')
 def new_timesheet():
@@ -285,21 +340,22 @@ def new_timesheet():
 # # # # # # # # # # # # # # # # # # # # 
 @app.route('/register', methods=['POST'])
 def register():
-    name = request.json['name']
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
     email = request.json['email']
-    phone_number = request.json['phone_number']
+    phone = request.json['phone']
     username = request.json['username']
     password = request.json['password']
     password_hash = generate_password_hash(password)
     query = """
         INSERT INTO users
-        (name, email, username, password_hash)
-        VALUES (%s, %s, %s)
-        RETURNING id, name, username
+        (first_name, last_name, email, phone, username, password_hash)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        RETURNING id, first_name, last_name, email, phone, username
     """
     cur = g.db['cursor']
     try:
-        cur.execute(query, (name, email, phone_number, username, password_hash))
+        cur.execute(query, (first_name, last_name, email, phone, username, password_hash))
     except psycopg2.IntegrityError:
         return jsonify(success=False, msg='Username already taken.')
     g.db['connection'].commit()
