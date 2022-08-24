@@ -57,25 +57,25 @@ def show_user(user_id):
     return jsonify(user)
 
 # Update selected user
-@app.route('/users/<user_id>')
+@app.route('/users/<user_id>', methods=['PUT'])
 def update_user(user_id):
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    email = request.json['email']
-    phone_number = request.json['phone_number']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    phone = request.form['phone']
 
     query = """
         UPDATE users
-        SET first_name = %s, last_name = %s, email = %s, phone_number = %s
-        WHERE user_id = %s
+        SET first_name = %s, last_name = %s, email = %s, phone = %s
+        WHERE users.id = %s
         RETURNING *
     """
 
     cur = g.db['cursor']
-    cur.execute(query, (first_name, last_name, email, phone_number))
-    g.db['connection'].commit()
-
-    
+    cur.execute(query, (first_name, last_name, email, phone, user_id))
+    g.db['connection'].commit() 
+    user = g.db['cursor'].fetchone()
+    return jsonify(user)
 
 # # # # # # # # # # # # # # # # # # # # 
 # CLIENTS 
@@ -107,6 +107,26 @@ def show_client(client_id):
     cur.execute(query, (client_id,))
     client = cur.fetchone()
     return jsonify(client)
+
+# Update selected client
+@app.route('/clients/<client_id>', methods=['PUT'])
+def update_client(client_id):
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
+    email = request.json['email']
+    phone = request.json['phone']
+    company = request.json['company']
+
+    query = """
+        UPDATE clients
+        SET first_name = %s, last_name = %s, email = %s, phone = %s, company = %s
+        WHERE client.id = %s
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (first_name, last_name, email, phone, company, client_id))
+    g.db['connection'].commit() 
 
 # Make new client
 @app.route('/clients/new', methods=['POST'])
