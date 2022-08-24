@@ -95,21 +95,6 @@ const ProfileForm = (props) => {
             >
               <TextField
                 fullWidth
-                label="Username"
-                name="username"
-                onChange={handleChange}
-                required
-                value={values.username}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
                 label="Phone Number"
                 name="phone"
                 onChange={handleChange}

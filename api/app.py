@@ -1,3 +1,4 @@
+import email
 from flask import (
     Flask,
     redirect,
@@ -28,19 +29,50 @@ def disconnect_from_db(response):
 # # # # # # # # # # # # # # # # # # # # 
 # USERS 
 # # # # # # # # # # # # # # # # # # # # 
+
+# List all users 
 @app.route('/users')
 def users():
     query = """
-        SELECT id, name, email, phone_number, username 
+        SELECT id, first_name, last_name, email, phone_number, username 
         FROM users
     """
     g.db['cursor'].execute(query)
     users = g.db['cursor'].fetchall()
     return jsonify(users)
 
+# List selected user
+@app.route('/users/<user_id>')
+def show_user(user_id):
+    cur = g.db['cursor']
+    query = """
+        SELECT * FROM users
+        WHERE users.id = %s
+    """
+    cur.execute(query, (user_id,))
+    user = cur.fetchone()
+    return jsonify(user)
+
+# Update selected user
+@app.route('/users/<user_id>')
+def update_user():
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
+    email = request.json['email']
+    phone_number = request.json['phone_number']
+    query = """
+        UPDATE users
+        SET first_name = %s, last_name = %s, email = %s, phone_number = %s
+        WHERE user_id = %s
+        RETURNING *
+    """
+    
+
 # # # # # # # # # # # # # # # # # # # # 
 # CLIENTS 
 # # # # # # # # # # # # # # # # # # # # 
+
+# List all clients
 @app.route('/clients')
 def clients():
     query = """
@@ -52,27 +84,43 @@ def clients():
     clients = g.db['cursor'].fetchall()
     return jsonify(clients)
 
-# # # # # # # # # # # # # # # # # # # # 
-# NEW CLIENTS 
-# # # # # # # # # # # # # # # # # # # # 
+# List selected client
+@app.route('/clients/<client_id>')
+def show_client(client_id):
+    cur = g.db['cursor']
+    query = """
+        SELECT * FROM clients
+        WHERE clients.id = %s
+    """
+    cur.execute(query, (client_id,))
+    client = cur.fetchone()
+    return jsonify(client)
+
+# Make new client
 @app.route('/clients/new', methods=['POST'])
 def new_client():
-    name = request.form['name']
-    user = session.get('user', None)
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    phone = request.form['phone']
+    company = request.form['company']
 
+    user = session.get('user', None)
     if user is None:
-        return jsonify(success=False, msg='You must be logged in to adda a new client.')
+        return jsonify(success=False, msg='You must be logged in to add a new client.')
     
     query = """
         INSERT INTO clients
-        (name)
-        VALUES (%s)
+        (first_name, last_name, email, phone, company)
+        VALUES (%s, %s, %s, %s, %s)
         RETURNING *
     """
-    g.db['cursor'].execute(query, (name,))
+    g.db['cursor'].execute(query, (first_name, last_name, email, phone, company))
     g.db['connection'].commit()
     client = g.db['cursor'].fetchone()
     return jsonify(client)
+
+
 
 # # # # # # # # # # # # # # # # # # # # 
 # ACTIVITIES 
@@ -102,9 +150,7 @@ def projects():
     projects = g.db['cursor'].fetchall()
     return jsonify(projects)
 
-# # # # # # # # # # # # # # # # # # # # 
-# NEW PROJECTS 
-# # # # # # # # # # # # # # # # # # # # 
+# Create new project
 @app.route('/projects/new', methods=['POST'])
 def new_projects():
     name = request.form['name']
@@ -132,6 +178,8 @@ def new_projects():
 # # # # # # # # # # # # # # # # # # # # 
 # TIMESHEETS 
 # # # # # # # # # # # # # # # # # # # # 
+
+# List all timesheets
 @app.route('/timesheets')
 def timesheets():
     query = """
@@ -143,9 +191,7 @@ def timesheets():
     timesheets = g.db['cursor'].fetchall()
     return jsonify(timesheets)
 
-# # # # # # # # # # # # # # # # # # # # 
-# NEW TIMESHEETS 
-# # # # # # # # # # # # # # # # # # # # 
+# Create new timesheet
 @app.route('/timesheets/new')
 def new_timesheets():
     client_id = request.form['client_id']
@@ -177,18 +223,20 @@ def new_timesheets():
 @app.route('/register', methods=['POST'])
 def register():
     name = request.json['name']
+    email = request.json['email']
+    phone_number = request.json['phone_number']
     username = request.json['username']
     password = request.json['password']
     password_hash = generate_password_hash(password)
     query = """
         INSERT INTO users
-        (name, username, password_hash)
+        (name, email, username, password_hash)
         VALUES (%s, %s, %s)
         RETURNING id, name, username
     """
     cur = g.db['cursor']
     try:
-        cur.execute(query, (name, username, password_hash))
+        cur.execute(query, (name, email, phone_number, username, password_hash))
     except psycopg2.IntegrityError:
         return jsonify(success=False, msg='Username already taken.')
     g.db['connection'].commit()
