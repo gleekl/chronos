@@ -81,6 +81,10 @@ const App = () => {
 
   useEffect(() => {
     getUsers()
+    getClients()
+    getProjects()
+    getTimesheets()
+    getActivities()
   }, [])
 
   const handleSubmit = (whichForm) => {
@@ -105,6 +109,8 @@ const App = () => {
     if (data.success) setUser(null)
     navigate('/register')
   }
+
+  console.log(projects);
 
   return (
     <div className="App">
