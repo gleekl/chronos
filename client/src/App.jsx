@@ -16,7 +16,6 @@ const App = () => {
   // Logged in user
   const [user, setUser] = useState(null)
   const [authorised, setAuthorised] = useState(null);
-  console.log(user);
 
   // Users
   const [users, setUsers] = useState([])
@@ -122,7 +121,13 @@ const App = () => {
               />
             }
           />
-          <Route path='/timesheets' element={<Timesheets />} />
+          <Route
+            path='/timesheets'
+            element={
+              <Timesheets
+              />
+            }
+          />
           <Route
             path='/users'
             element={
@@ -131,8 +136,22 @@ const App = () => {
               />
             }
           />
-          <Route path='/clients' element={<Clients />} />
-          <Route path='/projects' element={<Projects />} />
+          <Route
+            path='/clients'
+            element={
+              <Clients
+                clients={clients}
+              />
+            }
+          />
+          <Route
+            path='/projects'
+            element={
+              <Projects
+                projects={projects}
+              />
+            }
+          />
           <Route
             path='/register'
             element={
