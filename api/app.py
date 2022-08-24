@@ -37,6 +37,7 @@ def users():
         SELECT id, first_name, last_name, email, phone_number, username 
         FROM users
     """
+
     g.db['cursor'].execute(query)
     users = g.db['cursor'].fetchall()
     return jsonify(users)
@@ -45,27 +46,35 @@ def users():
 @app.route('/users/<user_id>')
 def show_user(user_id):
     cur = g.db['cursor']
+
     query = """
         SELECT * FROM users
         WHERE users.id = %s
     """
+
     cur.execute(query, (user_id,))
     user = cur.fetchone()
     return jsonify(user)
 
 # Update selected user
 @app.route('/users/<user_id>')
-def update_user():
+def update_user(user_id):
     first_name = request.json['first_name']
     last_name = request.json['last_name']
     email = request.json['email']
     phone_number = request.json['phone_number']
+
     query = """
         UPDATE users
         SET first_name = %s, last_name = %s, email = %s, phone_number = %s
         WHERE user_id = %s
         RETURNING *
     """
+
+    cur = g.db['cursor']
+    cur.execute(query, (first_name, last_name, email, phone_number))
+    g.db['connection'].commit()
+
     
 
 # # # # # # # # # # # # # # # # # # # # 
@@ -80,6 +89,7 @@ def clients():
         FROM clients
         ORDER BY id ASC
     """
+
     g.db['cursor'].execute(query)
     clients = g.db['cursor'].fetchall()
     return jsonify(clients)
@@ -88,10 +98,12 @@ def clients():
 @app.route('/clients/<client_id>')
 def show_client(client_id):
     cur = g.db['cursor']
+
     query = """
         SELECT * FROM clients
         WHERE clients.id = %s
     """
+
     cur.execute(query, (client_id,))
     client = cur.fetchone()
     return jsonify(client)
@@ -115,12 +127,11 @@ def new_client():
         VALUES (%s, %s, %s, %s, %s)
         RETURNING *
     """
+
     g.db['cursor'].execute(query, (first_name, last_name, email, phone, company))
     g.db['connection'].commit()
     client = g.db['cursor'].fetchone()
     return jsonify(client)
-
-
 
 # # # # # # # # # # # # # # # # # # # # 
 # ACTIVITIES 
@@ -139,6 +150,8 @@ def activities():
 # # # # # # # # # # # # # # # # # # # # 
 # PROJECTS 
 # # # # # # # # # # # # # # # # # # # # 
+
+# List all projects
 @app.route('/projects')
 def projects():
     query = """
@@ -150,9 +163,23 @@ def projects():
     projects = g.db['cursor'].fetchall()
     return jsonify(projects)
 
+# List each project
+@app.route('/projects/<project_id>')
+def show_project(project_id):
+    cur = g.db['cursor']
+
+    query = """
+        SELECT * FROM projects
+        WHERE projects.id = %s
+    """
+
+    cur.execute(query, (project_id,))
+    project = cur.fetchone()
+    return jsonify(project)
+
 # Create new project
 @app.route('/projects/new', methods=['POST'])
-def new_projects():
+def new_project():
     name = request.form['name']
     client_id = request.form['client_id']
     date_start = request.form['date_start']
@@ -191,9 +218,25 @@ def timesheets():
     timesheets = g.db['cursor'].fetchall()
     return jsonify(timesheets)
 
+# List each timesheet
+@app.route('/timesheets/<timesheet_id>')
+def show_timesheet(timesheet_id):
+    cur = g.db['cursor']
+
+    query = """
+        SELECT * FROM timesheets
+        WHERE timesheets.id = %s
+    """
+
+    cur.execute(query, (timesheet_id,))
+    timesheet = cur.fetchone()
+    return jsonify(timesheet)
+
+
+
 # Create new timesheet
 @app.route('/timesheets/new')
-def new_timesheets():
+def new_timesheet():
     client_id = request.form['client_id']
     project_id = request.form['project_id']
     activity_id = request.form['activity_id']
