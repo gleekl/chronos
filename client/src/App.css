@@ -1,5 +1,6 @@
 main {
-  position: fixed;
+  position: relative;
+  width: 80%;
   left: 260px;
 }
 

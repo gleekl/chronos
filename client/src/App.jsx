@@ -33,6 +33,8 @@ const App = () => {
   const [activities, setActivities] = useState([])
   // Project Duration
   const [projectDuration, setProjectDuration] = useState([])
+  // Project Duration
+  const [projectSplit, setProjectSplit] = useState([])
 
   const navigate = useNavigate();
 
@@ -71,11 +73,19 @@ const App = () => {
     setActivities(data)
   }
 
+  // Dashboard Chart Use
   const getProjectDuration = async () => {
-    const url = "/dashboard";
+    const url = "/dashboard/projectduration";
     const res = await fetch(url);
     const data = await res.json();
     setProjectDuration(data)
+  }
+
+  const getProjectSplit = async () => {
+    const url = "/dashboard/projectsplit";
+    const res = await fetch(url);
+    const data = await res.json();
+    setProjectSplit(data)
   }
 
   useEffect(() => {
@@ -199,6 +209,7 @@ const App = () => {
     getTimesheets()
     getActivities()
     getProjectDuration()
+    getProjectSplit()
   }, [])
 
   return (
@@ -213,6 +224,7 @@ const App = () => {
               element={
                 <Dashboard
                 projectDuration={projectDuration}
+                projectSplit={projectSplit}
                 />
               }
             />

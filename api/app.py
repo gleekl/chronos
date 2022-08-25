@@ -351,19 +351,36 @@ def new_timesheet():
 # DASHBOARD
 # # # # # # # # # # # # # # # # # # # # 
 
-@app.route('/dashboard')
+# Project Duration
+@app.route('/dashboard/projectduration')
 def project_duration():
     query = """
         SELECT name AS project, total_duration AS duration
         FROM projects
         JOIN clients ON projects.user_id = clients.id
-        ORDER BY total_duration DESC 
+        ORDER BY total_duration DESC
         LIMIT 10;
     """
 
     g.db['cursor'].execute(query)
     project_duration = g.db['cursor'].fetchall()
     return jsonify(project_duration)
+
+# Project Split
+@app.route('/dashboard/projectsplit')
+def project_split():
+    query = """
+        SELECT CONCAT(users.first_name, ' ', users.last_name) AS user, COUNT(*) AS number_of_projects
+        FROM projects
+        JOIN users 
+        ON projects.user_id = users.id
+        GROUP BY users.first_name, users.last_name
+        ORDER BY number_of_projects DESC;
+    """
+
+    g.db['cursor'].execute(query)
+    project_split = g.db['cursor'].fetchall()
+    return jsonify(project_split)
 
 # # # # # # # # # # # # # # # # # # # # 
 # REGISTER

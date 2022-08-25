@@ -10,13 +10,13 @@ import { BaseOptionChart } from '../chart';
 
 // ----------------------------------------------------------------------
 
-AppConversionRates.propTypes = {
+AppProjectDuration.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
   chartData: PropTypes.array.isRequired,
 };
 
-export default function AppConversionRates({ title, subheader, chartData, ...other }) {
+export default function AppProjectDuration({ title, subheader, chartData, ...other }) {
   const chartLabels = chartData.map((i) => i.label);
 
   const chartSeries = chartData.map((i) => i.value);
