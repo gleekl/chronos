@@ -290,10 +290,14 @@ def new_project():
 @app.route('/timesheets')
 def timesheets():
     query = """
-        SELECT * 
+        SELECT timesheets.id, CONCAT(users.first_name, ' ', users.last_name) AS user, clients.company AS client, projects.name AS project, activities.name AS activity, date, duration, comments
         FROM timesheets
-        ORDER BY id ASC
+        JOIN users ON timesheets.user_id = users.id
+        JOIN clients ON timesheets.client_id = clients.id
+        JOIN projects ON timesheets.project_id = projects.id
+        JOIN activities ON timesheets.activity_id = activities.id
     """
+
     g.db['cursor'].execute(query)
     timesheets = g.db['cursor'].fetchall()
     return jsonify(timesheets)
@@ -304,7 +308,12 @@ def show_timesheet(timesheet_id):
     cur = g.db['cursor']
 
     query = """
-        SELECT * FROM timesheets
+        SELECT timesheets.id, CONCAT(users.first_name, ' ', users.last_name) AS user, clients.company AS client, projects.name AS project, activities.name AS activity, date, duration, comments
+        FROM timesheets
+        JOIN users ON timesheets.user_id = users.id
+        JOIN clients ON timesheets.client_id = clients.id
+        JOIN projects ON timesheets.project_id = projects.id
+        JOIN activities ON timesheets.activity_id = activities.id
         WHERE timesheets.id = %s
     """
 
@@ -371,8 +380,8 @@ def register():
 # # # # # # # # # # # # # # # # # # # # 
 @app.route('/login', methods=['POST'])
 def login():
-    username: request.json['username']
-    password: request.json['password']
+    username = request.json['username']
+    password = request.json['password']
 
     query = """
         SELECT * 

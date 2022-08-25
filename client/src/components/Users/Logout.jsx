@@ -1,15 +1,14 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Logout = ({ handleLogout }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
+  const navigate = useNavigate()
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleCancel = () => {
+    navigate(-1)
   }
 
   const handleAgree = async () => {
@@ -18,15 +17,14 @@ const Logout = ({ handleLogout }) => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>Log Out</Button>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>Log Out</Button> */}
       <Dialog
         open={open}
-        onClose={handleClose}
       >
         <DialogTitle id="alert-dialog-title">{"Are you sure you wish to log out?"}</DialogTitle>
         <DialogActions>
           <Button onClick={handleAgree} variant="contained" autoFocus>Yes, log out</Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
         </DialogActions>
       </Dialog>
     </div>

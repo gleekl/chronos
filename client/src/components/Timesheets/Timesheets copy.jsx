@@ -22,7 +22,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import Stopwatch from './Stopwatch';
-import Scrollbar from '../Scrollbar';
 
 function createData(name, calories, fat, carbs, protein) {
   return {
@@ -82,46 +81,40 @@ const stableSort = (array, comparator) => {
 
 const headCells = [
   {
-    id: 'user',
+    id: 'name',
     numeric: false,
     disablePadding: true,
-    label: 'User',
+    label: 'Dessert (100g serving)',
   },
   {
-    id: 'client',
+    id: 'calories',
     numeric: true,
     disablePadding: false,
-    label: 'Client',
+    label: 'Calories',
   },
   {
-    id: 'project',
+    id: 'fat',
     numeric: true,
     disablePadding: false,
-    label: 'Project',
+    label: 'Fat (g)',
   },
   {
-    id: 'activity',
+    id: 'carbs',
     numeric: true,
     disablePadding: false,
-    label: 'Activity',
+    label: 'Carbs (g)',
   },
   {
-    id: 'date',
+    id: 'protein',
     numeric: true,
     disablePadding: false,
-    label: 'Date',
+    label: 'Protein (g)',
   },
   {
-    id: 'duration',
+    id: 'timer',
     numeric: true,
     disablePadding: false,
-    label: 'Duration',
-  },
-  {
-    id: 'comments',
-    numeric: true,
-    disablePadding: false,
-    label: 'Comments',
+    label: 'Timer',
   }
 ];
 
@@ -134,40 +127,40 @@ const EnhancedTableHead = (props) => {
 
   return (
     <TableHead>
-        <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              color="primary"
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={rowCount > 0 && numSelected === rowCount}
-              onChange={onSelectAllClick}
-              inputProps={{
-                'aria-label': 'select all desserts',
-              }}
-            />
-          </TableCell>
-          {headCells.map((headCell) => (
-            <TableCell
-              key={headCell.id}
-              align={headCell.numeric ? 'right' : 'left'}
-              padding={headCell.disablePadding ? 'none' : 'normal'}
-              sortDirection={orderBy === headCell.id ? order : false}
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              'aria-label': 'select all desserts',
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
             >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ))}
-        </TableRow>
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
     </TableHead>
   );
 }
@@ -211,7 +204,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Timesheets
+          Nutrition
         </Typography>
       )}
 
@@ -236,7 +229,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const Timesheets = ({ timesheets }) => {
+const Timesheets = () => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -358,7 +351,6 @@ const Timesheets = ({ timesheets }) => {
                         <TableCell align="right">{row.fat}</TableCell>
                         <TableCell align="right">{row.carbs}</TableCell>
                         <TableCell align="right">{row.protein}</TableCell>
-                        <TableCell align="right"><Stopwatch /></TableCell>
                       </TableRow>
                     );
                   })}

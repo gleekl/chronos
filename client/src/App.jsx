@@ -12,6 +12,7 @@ import Users from './components/Users/Users';
 import Profile from './components/Profile/Profile';
 import Projects from './components/Projects/Projects';
 import Dashboard from './components/Dashboard/Dashboard';
+import ThemeProvider from './theme';
 
 const App = () => {
   // Logged in user
@@ -30,11 +31,6 @@ const App = () => {
   const [activities, setActivities] = useState([])
 
   const navigate = useNavigate();
-
-  const handleAuthentication = (authed) => {
-    setAuthorised(authed);
-    navigate("/");
-  };
 
   const getUsers = async () => {
     const url = "/users";
@@ -80,14 +76,6 @@ const App = () => {
     if (!user) checkLoggedIn()
   }, [])
 
-  useEffect(() => {
-    getUsers()
-    getClients()
-    getProjects()
-    getTimesheets()
-    getActivities()
-  }, [])
-
   const handleSubmit = (whichForm) => {
     return async (fields) => {
       const res = await fetch(`/${whichForm}`, {
@@ -99,6 +87,7 @@ const App = () => {
       })
       const data = await res.json()
       setUser(data.user)
+      navigate("/");
     }
   }
 
@@ -108,83 +97,105 @@ const App = () => {
     })
     const data = await res.json()
     if (data.success) setUser(null)
-    navigate('/register')
+    navigate('/login')
   }
 
-  console.log(projects);
-  
+  const handleAuthentication = (authed) => {
+    setAuthorised(authed);
+    navigate("/");
+  };
+
+  const checkIfLoggedIn = async () => {
+    const res = await fetch("/is-authenticated");
+    const data = await res.json();
+    setAuthorised(data.authorised);
+  };
+
+  useEffect(() => {
+    checkIfLoggedIn();
+    getUsers()
+    getClients()
+    getProjects()
+    getTimesheets()
+    getActivities()
+  }, [])
+
   return (
-    <div className="App">
-      {user !== undefined && <NavigationBar />}
-      <main>
-        {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
-        <Routes>
-          <Route path='/' element={<Dashboard />}/>
-          <Route
-            path='/profile'
-            element={
-              <Profile
-                user={user}
-              />
-            }
-          />
-          <Route
-            path='/timesheets'
-            element={
-              <Timesheets
-              />
-            }
-          />
-          <Route
-            path='/users'
-            element={
-              <Users
-                users={users}
-              />
-            }
-          />
-          <Route
-            path='/clients'
-            element={
-              <Clients
-                clients={clients}
-              />
-            }
-          />
-          <Route
-            path='/projects'
-            element={
-              <Projects
-                projects={projects}
-              />
-            }
-          />
-          <Route
-            path='/register'
-            element={
-              <Register
-                handleSubmit={handleSubmit("register")}
-              />
-            }
-          />
-          <Route
-            path='/login'
-            element={
-              <Login
-                handleSubmit={handleSubmit("login")}
-              />
-            }
-          />
-          <Route
-            path='/logout'
-            element={
-              <Logout handleLogout={handleLogout}
-              />
-            }
-          />
-        </Routes>
-      </main>
-    </div>
+    <ThemeProvider>
+      <div className="App">
+        {user !== undefined && <NavigationBar />}
+        <main>
+          {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
+          <Routes>
+            <Route path='/' element={<Dashboard />} />
+            <Route
+              path='/profile'
+              element={
+                <Profile
+                  user={user}
+                />
+              }
+            />
+            <Route
+              path='/timesheets'
+              element={
+                <Timesheets
+                  timesheets={timesheets}
+                />
+              }
+            />
+            <Route
+              path='/users'
+              element={
+                <Users
+                  users={users}
+                />
+              }
+            />
+            <Route
+              path='/clients'
+              element={
+                <Clients
+                  clients={clients}
+                />
+              }
+            />
+            <Route
+              path='/projects'
+              element={
+                <Projects
+                  projects={projects}
+                />
+              }
+            />
+            <Route
+              path='/register'
+              element={
+                <Register
+                  handleSubmit={handleSubmit("register")}
+                />
+              }
+            />
+            <Route
+              path='/login'
+              element={
+                <Login
+                  handleSubmit={handleSubmit("login")}
+                  handleLogin={handleAuthentication}
+                />
+              }
+            />
+            <Route
+              path='/logout'
+              element={
+                <Logout handleLogout={handleLogout}
+                />
+              }
+            />
+          </Routes>
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 

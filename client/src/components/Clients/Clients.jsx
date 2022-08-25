@@ -128,7 +128,7 @@ const Clients = ({ customers, ...rest }) => {
                                                 src={customer.avatarUrl}
                                                 sx={{ mr: 2 }}
                                             >
-                                                {getInitials(customer.name)}
+                                                {customer.name}
                                             </Avatar>
                                             <Typography
                                                 color="textPrimary"
