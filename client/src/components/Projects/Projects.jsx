@@ -31,14 +31,18 @@ import TableListHead from '../Table/TableListHead';
 import TableListToolbar from '../Table/TableListToolbar';
 import TableMoreMenu from '../Table/TableMoreMenu';
 
+// ----------------------------------------------------------------------
+
 const TABLE_HEAD = [
-    { id: 'project', label: 'Project', alignRight: false },
+    { id: 'name', label: 'Name', alignRight: false },
     { id: 'company', label: 'Company', alignRight: false },
-    { id: 'user', label: 'User', alignRight: false },
-    { id: 'date_start', label: 'Start Date', alignRight: false },
-    { id: 'date_end', label: 'End Date', alignRight: false },
+    { id: 'role', label: 'Role', alignRight: false },
+    { id: 'isVerified', label: 'Verified', alignRight: false },
+    { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
 ];
+
+// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -119,7 +123,7 @@ const Projects = ({ projects }) => {
     const handleFilterByName = (event) => {
         setFilterName(event.target.value);
     };
-    
+
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - projects.length) : 0;
 
     const filteredUsers = applySortFilter(projects, getComparator(order, orderBy), filterName);
@@ -133,8 +137,8 @@ const Projects = ({ projects }) => {
                     <Typography variant="h4" gutterBottom>
                         Projects
                     </Typography>
-                    <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
-                        New Projects
+                    <Button variant="contained" component={RouterLink} to="/projects/new" startIcon={<Iconify icon="eva:plus-fill" />}>
+                        New Project
                     </Button>
                 </Stack>
 

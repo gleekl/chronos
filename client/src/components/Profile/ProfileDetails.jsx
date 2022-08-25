@@ -9,15 +9,6 @@ import {
     Typography
 } from '@mui/material';
 
-const user = {
-    avatar: '/static/images/avatars/avatar_6.png',
-    city: 'Los Angeles',
-    country: 'USA',
-    jobTitle: 'Senior Developer',
-    name: 'Katarina Smith',
-    timezone: 'GTM-7'
-};
-
 const ProfileDetails = ({ user }) => (
     <Card {...user}>
         <CardContent>
@@ -28,14 +19,6 @@ const ProfileDetails = ({ user }) => (
                     flexDirection: 'column'
                 }}
             >
-                <Avatar
-                    src={user.avatar}
-                    sx={{
-                        height: 64,
-                        mb: 2,
-                        width: 64
-                    }}
-                />
                 <Typography
                     color="textPrimary"
                     gutterBottom

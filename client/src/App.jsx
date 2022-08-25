@@ -13,6 +13,8 @@ import Profile from './components/Profile/Profile';
 import Projects from './components/Projects/Projects';
 import Dashboard from './components/Dashboard/Dashboard';
 import ThemeProvider from './theme';
+import CreateProject from './components/Projects/CreateProject';
+import CreateClient from './components/Clients/CreateClient';
 
 const App = () => {
   // Logged in user
@@ -29,6 +31,8 @@ const App = () => {
   const [timesheets, setTimesheets] = useState([])
   // Activities
   const [activities, setActivities] = useState([])
+  // Project Duration
+  const [projectDuration, setProjectDuration] = useState([])
 
   const navigate = useNavigate();
 
@@ -67,6 +71,13 @@ const App = () => {
     setActivities(data)
   }
 
+  const getProjectDuration = async () => {
+    const url = "/dashboard";
+    const res = await fetch(url);
+    const data = await res.json();
+    setProjectDuration(data)
+  }
+
   useEffect(() => {
     const checkLoggedIn = async () => {
       const res = await fetch('/is-authenticated')
@@ -91,6 +102,75 @@ const App = () => {
     }
   }
 
+  // const handleEditUser = (editedUser) => {
+  //   return async (fields) => {
+  //     const res = await fetch(`/users/${editedUser.id}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(fields)
+  //     })
+  //     const data = await res.json()
+  //     const index = users.indexOf(users.find((user) => user.id === editedUser.id))
+  //     setUser([
+  //       ...users.splice(0, index),
+  //       data,
+  //       ...users.splice(index + 1)
+  //     ])
+  //     navigate('/profile')
+  //   }
+  // }
+
+  const handleEditUser = async (userObj, userID) => {
+    const formData = new FormData();
+
+    for (let field in userObj) {
+      formData.append(field, userObj[field]);
+    }
+
+    const res = await fetch(`/users/${userID}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (res.ok) {
+      getUsers();
+
+      let updatedUser = { ...users.find((user) => user._id === userID) };
+
+      const index = users.findIndex((user) => user._id === userID);
+
+      setUsers([...users.slice(0, index), updatedUser, ...users.slice(index + 1)]);
+
+      navigate(`/`);
+
+    } else {
+      console.log("Error editing user.", userID);
+    }
+  };
+
+  // const handleEditClient = async (client) => {
+  //   const res = await fetch(`/clients/<${client.id}>`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(client)
+  //   })
+  //   const returnedItem = await res.json()
+  //   const index = products.indexOf(products.find((item) => item.item_id === client.item_id))
+  //   setProducts([
+  //     ...products.splice(0, index),
+  //     returnedItem,
+  //     ...products.splice(index + 1)
+  //   ])
+  //   navigate("/items")
+  // }
+
+  ////////////////////////////////////////////////////////
+  // Users
+  ////////////////////////////////////////////////////////
   const handleLogout = async () => {
     const res = await fetch('/logout', {
       method: 'POST'
@@ -118,6 +198,7 @@ const App = () => {
     getProjects()
     getTimesheets()
     getActivities()
+    getProjectDuration()
   }, [])
 
   return (
@@ -127,15 +208,26 @@ const App = () => {
         <main>
           {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
           <Routes>
-            <Route path='/' element={<Dashboard />} />
+            <Route
+              path='/'
+              element={
+                <Dashboard
+                projectDuration={projectDuration}
+                />
+              }
+            />
             <Route
               path='/profile'
               element={
                 <Profile
                   user={user}
+                  users={users}
+                  handleEditUser={handleEditUser}
                 />
               }
             />
+
+            {/* Timesheets */}
             <Route
               path='/timesheets'
               element={
@@ -144,6 +236,8 @@ const App = () => {
                 />
               }
             />
+
+            {/* Users */}
             <Route
               path='/users'
               element={
@@ -152,6 +246,7 @@ const App = () => {
                 />
               }
             />
+            {/* Clients */}
             <Route
               path='/clients'
               element={
@@ -160,6 +255,17 @@ const App = () => {
                 />
               }
             />
+            {/* Create new client */}
+            <Route
+              path='/clients/new'
+              element={
+                <CreateClient
+                  clients={clients}
+                />
+              }
+            />
+
+            {/* Projects */}
             <Route
               path='/projects'
               element={
@@ -168,6 +274,19 @@ const App = () => {
                 />
               }
             />
+
+            {/* Create new project */}
+            <Route
+              path='/projects/new'
+              element={
+                <CreateProject
+                  projects={projects}
+                  handleSubmit={handleSubmit}
+                />
+              }
+            />
+
+            {/* Register */}
             <Route
               path='/register'
               element={
@@ -176,6 +295,8 @@ const App = () => {
                 />
               }
             />
+
+            {/* Login */}
             <Route
               path='/login'
               element={
@@ -185,6 +306,8 @@ const App = () => {
                 />
               }
             />
+
+            {/* Logout */}
             <Route
               path='/logout'
               element={

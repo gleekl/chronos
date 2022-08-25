@@ -348,6 +348,24 @@ def new_timesheet():
     return jsonify(project)
 
 # # # # # # # # # # # # # # # # # # # # 
+# DASHBOARD
+# # # # # # # # # # # # # # # # # # # # 
+
+@app.route('/dashboard')
+def project_duration():
+    query = """
+        SELECT name AS project, total_duration AS duration
+        FROM projects
+        JOIN clients ON projects.user_id = clients.id
+        ORDER BY total_duration DESC 
+        LIMIT 10;
+    """
+
+    g.db['cursor'].execute(query)
+    project_duration = g.db['cursor'].fetchall()
+    return jsonify(project_duration)
+
+# # # # # # # # # # # # # # # # # # # # 
 # REGISTER
 # # # # # # # # # # # # # # # # # # # # 
 @app.route('/register', methods=['POST'])

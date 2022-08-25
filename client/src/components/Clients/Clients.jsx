@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import {
     Avatar,
     Box,
+    Button,
     Card,
     Checkbox,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -15,6 +18,8 @@ import {
     TableRow,
     Typography
 } from '@mui/material';
+import Iconify from '../Iconify';
+import { Container } from '@mui/system';
 
 const getInitials = (name = '') => name
     .replace(/\s+/, ' ')
@@ -23,7 +28,7 @@ const getInitials = (name = '') => name
     .map((v) => v && v[0].toUpperCase())
     .join('');
 
-const Clients = ({ customers, ...rest }) => {
+const Clients = ({ clients, ...rest }) => {
     const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(0);
@@ -32,7 +37,7 @@ const Clients = ({ customers, ...rest }) => {
         let newSelectedCustomerIds;
 
         if (event.target.checked) {
-            newSelectedCustomerIds = customers.map((customer) => customer.id);
+            newSelectedCustomerIds = clients.map((customer) => customer.id);
         } else {
             newSelectedCustomerIds = [];
         }
@@ -69,6 +74,17 @@ const Clients = ({ customers, ...rest }) => {
     };
 
     return (
+        <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Typography variant="h4" gutterBottom>
+                    Clients
+                </Typography>
+                <Button variant="contained" component={RouterLink} to="/clients/new" startIcon={<Iconify icon="eva:plus-fill" />}>
+                    New Client
+                </Button>
+            </Stack>
+
+
         <Card {...rest}>
             <PerfectScrollbar>
                 <Box sx={{ minWidth: 1050 }}>
@@ -77,11 +93,11 @@ const Clients = ({ customers, ...rest }) => {
                             <TableRow>
                                 <TableCell padding="checkbox">
                                     <Checkbox
-                                        checked={selectedCustomerIds.length === customers.length}
+                                        checked={selectedCustomerIds.length === clients.length}
                                         color="primary"
                                         indeterminate={
                                             selectedCustomerIds.length > 0
-                                            && selectedCustomerIds.length < customers.length
+                                            && selectedCustomerIds.length < clients.length
                                         }
                                         onChange={handleSelectAll}
                                     />
@@ -104,16 +120,16 @@ const Clients = ({ customers, ...rest }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {customers.slice(0, limit).map((customer) => (
+                            {clients.slice(0, limit).map((client) => (
                                 <TableRow
                                     hover
-                                    key={customer.id}
-                                    selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                                    key={client.id}
+                                    selected={selectedCustomerIds.indexOf(client.id) !== -1}
                                 >
                                     <TableCell padding="checkbox">
                                         <Checkbox
-                                            checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                                            onChange={(event) => handleSelectOne(event, customer.id)}
+                                            checked={selectedCustomerIds.indexOf(client.id) !== -1}
+                                            onChange={(event) => handleSelectOne(event, client.id)}
                                             value="true"
                                         />
                                     </TableCell>
@@ -125,30 +141,27 @@ const Clients = ({ customers, ...rest }) => {
                                             }}
                                         >
                                             <Avatar
-                                                src={customer.avatarUrl}
+                                                src={client.avatarUrl}
                                                 sx={{ mr: 2 }}
                                             >
-                                                {customer.name}
+                                                {client.name}
                                             </Avatar>
                                             <Typography
                                                 color="textPrimary"
                                                 variant="body1"
                                             >
-                                                {customer.name}
+                                                {client.name}
                                             </Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell>
-                                        {customer.email}
+                                        {client.email}
                                     </TableCell>
                                     <TableCell>
-                                        {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                                        {client.email}
                                     </TableCell>
                                     <TableCell>
-                                        {customer.phone}
-                                    </TableCell>
-                                    <TableCell>
-                                        {format(customer.createdAt, 'dd/MM/yyyy')}
+                                        {client.phone}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -158,7 +171,7 @@ const Clients = ({ customers, ...rest }) => {
             </PerfectScrollbar>
             <TablePagination
                 component="div"
-                count={customers.length}
+                count={clients.length}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleLimitChange}
                 page={page}
@@ -166,11 +179,12 @@ const Clients = ({ customers, ...rest }) => {
                 rowsPerPageOptions={[5, 10, 25]}
             />
         </Card>
+        </Container>
     );
 };
 
 export default Clients
 
 Clients.propTypes = {
-    customers: PropTypes.array.isRequired
+    clients: PropTypes.array.isRequired
 };

@@ -31,6 +31,11 @@ const navItems = [
         link: "/"
     },
     {
+        text: "Profile",
+        component: <ProfileIcon />,
+        link: "/profile"
+    },
+    {
         text: "Users",
         component: <UsersIcon />,
         link: "/users"
@@ -41,11 +46,6 @@ const navItems = [
         link: "/clients"
     },
     {
-        text: "Profile",
-        component: <ProfileIcon />,
-        link: "/profile"
-    },
-    {
         text: "Projects",
         component: <ProjectIcon />,
         link: "/projects"
@@ -54,11 +54,6 @@ const navItems = [
         text: "Timesheets",
         component: <TimeIcon />,
         link: "/timesheets"
-    },
-    {
-        text: "Reports",
-        component: <ChartIcon />,
-        link: "/reports"
     },
     {
         text: "Register",

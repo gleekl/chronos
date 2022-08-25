@@ -10,9 +10,13 @@ import {
   TextField
 } from '@mui/material';
 
-const ProfileForm = ({ user }) => {
-  console.log(user);
+const ProfileForm = ({ user, users, handleEditUser }) => {
   const [values, setValues] = useState(user);
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    handleEditUser(values)
+  }
 
   const handleChange = (event) => {
     setValues({
@@ -20,12 +24,13 @@ const ProfileForm = ({ user }) => {
       [event.target.name]: event.target.value
     });
   };
-
+  
   return (
     <form
       autoComplete="off"
       noValidate
       {...user}
+      onSubmit={handleSubmit}
     >
       <Card>
         <CardHeader

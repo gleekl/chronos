@@ -5,7 +5,7 @@ import DashboardLayout from '../Navigation/DashboardLayout';
 import ProfileDetails from './ProfileDetails';
 import ProfileForm from './ProfileForm';
 
-const Profile = ({ user }) => {
+const Profile = ({ user, users, handleEditUser }) => {
   // const user = users.find
 
   return (
@@ -47,7 +47,11 @@ const Profile = ({ user }) => {
               md={6}
               xs={12}
             >
-              <ProfileForm user={user} />
+              <ProfileForm
+                user={user}
+                users={users}
+                handleEditUser={handleEditUser}
+              />
             </Grid>
           </Grid>
         </Container>
