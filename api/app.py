@@ -232,9 +232,10 @@ def new_activity():
 @app.route('/projects')
 def projects():
     query = """
-        SELECT * 
+        SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, date_start, date_end, total_duration
         FROM projects
-        ORDER BY id ASC
+        JOIN users ON projects.user_id = users.id
+        JOIN clients ON projects.user_id = clients.id;
     """
     g.db['cursor'].execute(query)
     projects = g.db['cursor'].fetchall()
@@ -246,8 +247,10 @@ def show_project(project_id):
     cur = g.db['cursor']
 
     query = """
-        SELECT * FROM projects
-        WHERE projects.id = %s
+        SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, date_start, date_end, total_duration
+        FROM projects
+        JOIN users ON projects.user_id = users.id
+        JOIN clients ON projects.user_id = clients.id;
     """
 
     cur.execute(query, (project_id,))

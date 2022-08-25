@@ -4,13 +4,14 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import './App.css';
 import Clients from './components/Clients/Clients';
 import NavigationBar from './components/Navigation/NavigationBar';
-import Projects from './components/Projects/Projects';
 import Timesheets from './components/Timesheets/Timesheets';
 import Login from './components/Users/Login';
 import Logout from './components/Users/Logout';
 import Register from './components/Users/Register';
 import Users from './components/Users/Users';
 import Profile from './components/Profile/Profile';
+import Projects from './components/Projects/Projects';
+import Dashboard from './components/Dashboard/Dashboard';
 
 const App = () => {
   // Logged in user
@@ -111,14 +112,14 @@ const App = () => {
   }
 
   console.log(projects);
-
+  
   return (
     <div className="App">
       {user !== undefined && <NavigationBar />}
       <main>
         {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
         <Routes>
-          {/* <Route path='/' element={<Dashboard />}/> */}
+          <Route path='/' element={<Dashboard />}/>
           <Route
             path='/profile'
             element={
