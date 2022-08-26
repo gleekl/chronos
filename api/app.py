@@ -155,6 +155,21 @@ def new_client():
     client = g.db['cursor'].fetchone()
     return jsonify(client)
 
+# Delete client
+@app.route('/clients/<client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    query = """
+        DELETE FROM clients
+        WHERE id = %s
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (client_id,))
+    g.db['connection'].commit()
+    client = cur.fetchone()
+    return jsonify(client)
+
 # # # # # # # # # # # # # # # # # # # # 
 # ACTIVITIES 
 # # # # # # # # # # # # # # # # # # # # 
@@ -224,6 +239,21 @@ def new_activity():
     client = g.db['cursor'].fetchone()
     return jsonify(client)
 
+# Delete activity
+@app.route('/activities/<activity_id>', methods=['DELETE'])
+def delete_activity(activity_id):
+    query = """
+        DELETE FROM activities
+        WHERE id = %s
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (activity_id,))
+    g.db['connection'].commit()
+    activity = cur.fetchone()
+    return jsonify(activity)
+
 # # # # # # # # # # # # # # # # # # # # 
 # PROJECTS 
 # # # # # # # # # # # # # # # # # # # # 
@@ -280,6 +310,21 @@ def new_project():
     g.db['cursor'].execute(query, (name, user['id'], client_id, date_start, date_end, total_duration))
     g.db['connection'].commit()
     project = g.db['cursor'].fetchone()
+    return jsonify(project)
+
+# Delete Project
+@app.route('/projects/<project_id>', methods=['DELETE'])
+def delete_project(project_id):
+    query = """
+        DELETE FROM projects
+        WHERE id = %s
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (project_id,))
+    g.db['connection'].commit()
+    project = cur.fetchone()
     return jsonify(project)
 
 # # # # # # # # # # # # # # # # # # # # 
@@ -359,7 +404,7 @@ def project_duration():
         FROM projects
         JOIN clients ON projects.user_id = clients.id
         ORDER BY total_duration DESC
-        LIMIT 10;
+        LIMIT 10
     """
 
     g.db['cursor'].execute(query)

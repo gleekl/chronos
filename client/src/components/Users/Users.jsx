@@ -6,9 +6,9 @@ const columns = [
   { field: 'firstName', headerName: 'First name', width: 130 },
   { field: 'lastName', headerName: 'Last name', width: 130 },
   {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
+    field: 'email',
+    headerName: 'Email',
+    type: 'text',
     width: 90,
   },
   {
@@ -20,13 +20,19 @@ const columns = [
     valueGetter: (params) =>
       `${params.row.firstName || ''} ${params.row.lastName || ''}`,
   },
+  { field: 'phone', headerName: 'Phone', width: 130 }
 ];
 
 const rows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 }
 ];
 
-const Users = () => {
+const Users = ({ users }) => {
+  // const rows = users.map((user) = (
+  //   { id: 1, lastName: {user.last_name}, firstName: {user.first_name}, age: 35 }
+  // ))
+  console.log(users);
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid

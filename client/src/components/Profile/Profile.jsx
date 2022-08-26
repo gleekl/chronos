@@ -12,7 +12,7 @@ const Profile = ({ user, users, handleEditUser }) => {
     <>
       <Head>
         <title>
-          Account | Material Kit
+          Profile
         </title>
       </Head>
       <Box
@@ -27,7 +27,7 @@ const Profile = ({ user, users, handleEditUser }) => {
             sx={{ mb: 3 }}
             variant="h4"
           >
-            Account
+            User Profile
           </Typography>
           <Grid
             container

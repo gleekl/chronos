@@ -35,7 +35,7 @@ const Login = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className='login'>
         <CssBaseline />
         <Box
           sx={{

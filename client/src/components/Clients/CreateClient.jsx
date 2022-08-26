@@ -9,22 +9,17 @@ import { Link } from "react-router-dom";
 import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const initialState = {
-  projectName: "",
-  client: "",
-  user: "",
-  startDate: "",
-  endDate: "",
-  totalDuration: 0
+  first_name: "",
+  last_name: "",
+  company: "",
+  email: "",
+  phone: ""
 };
 
-const CreateClient = (props) => {
+const CreateClient = ({ handleCreateClient }) => {
   const [fields, setFields] = useState(initialState);
   const [image, setImage] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,15 +29,15 @@ const CreateClient = (props) => {
       [name]: value,
     };
     setFields(updatedFields);
-    const isDisabled = Object.values(updatedFields).some((v) => !v);
-    setButtonDisabled(isDisabled);
+    console.log(updatedFields);
+    // const isDisabled = Object.values(updatedFields).some((v) => !v);
+    // setButtonDisabled(isDisabled);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleCreate({ ...fields, image: image });
-    setFields(initialState);
-    setImage(null);
+    handleCreateClient({ ...fields });
+    // setFields(initialState);
   };
 
   return (
@@ -60,13 +55,12 @@ const CreateClient = (props) => {
               autoComplete="off"
             >
               <TextField
-                id="outlined-basic projectName"
-                label="Project Name"
+                id="outlined-basic firstName"
+                label="First Name"
                 variant="outlined"
-                name="projectName"
-                value={fields.projectName}
+                name="first_name"
+                value={fields.first_name}
                 onChange={handleChange}
-                placeholder="projectName"
                 type="text"
               />
             </Box>
@@ -82,11 +76,11 @@ const CreateClient = (props) => {
               autoComplete="off"
             >
               <TextField
-                id="outlined-basic client"
-                label="Client"
+                id="outlined-basic lastName"
+                label="Last Name"
                 variant="outlined"
-                name="client"
-                value={fields.client}
+                name="last_name"
+                value={fields.last_name}
                 onChange={handleChange}
                 placeholder="client"
                 type="text"
@@ -104,18 +98,18 @@ const CreateClient = (props) => {
               autoComplete="off"
             >
               <TextField
-                InputLabelProps={{ shrink: true }}
-                id="outlined-basic startDate"
-                label="Start Date"
+                id="outlined-basic company"
+                label="Company"
                 variant="outlined"
-                name="startDate"
-                value={fields.startDate}
+                name="company"
+                value={fields.company}
                 onChange={handleChange}
-                placeholder="startDate"
-                type="date"
+                placeholder="company"
+                type="text"
               />
             </Box>
           </div>
+
           <div>
             <Box
               // component="form"
@@ -126,18 +120,18 @@ const CreateClient = (props) => {
               autoComplete="off"
             >
               <TextField
-                InputLabelProps={{ shrink: true }}
-                id="outlined-basic endDate"
-                label="project End Date"
+                id="outlined-basic email"
+                label="Email"
                 variant="outlined"
-                name="endDate"
-                value={fields.endDate}
+                name="email"
+                value={fields.email}
                 onChange={handleChange}
-                placeholder="endDate"
-                type="date"
+                placeholder="Email"
+                type="text"
               />
             </Box>
           </div>
+
           <div>
             <Box
               // component="form"
@@ -148,14 +142,14 @@ const CreateClient = (props) => {
               autoComplete="off"
             >
               <TextField
-                id="outlined-basic totalDuration"
-                label="Total Duration"
+                id="outlined-basic phone"
+                label="Phone"
                 variant="outlined"
-                name="totalCost"
-                value={fields.totalCost}
+                name="phone"
+                value={fields.phone}
                 onChange={handleChange}
-                placeholder="Total duration"
-                type="number"
+                placeholder="Phone"
+                type="text"
               />
             </Box>
           </div>
@@ -165,7 +159,6 @@ const CreateClient = (props) => {
               <Button
                 variant="contained"
                 type="submit"
-                disabled={buttonDisabled}
               >
                 Submit
               </Button>

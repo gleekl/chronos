@@ -103,19 +103,19 @@ const Clients = ({ clients, ...rest }) => {
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    Name
+                                    First name
+                                </TableCell>
+                                <TableCell>
+                                    Last Name
+                                </TableCell>
+                                <TableCell>
+                                    Company
                                 </TableCell>
                                 <TableCell>
                                     Email
                                 </TableCell>
                                 <TableCell>
-                                    Location
-                                </TableCell>
-                                <TableCell>
                                     Phone
-                                </TableCell>
-                                <TableCell>
-                                    Registration date
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -150,12 +150,15 @@ const Clients = ({ clients, ...rest }) => {
                                                 color="textPrimary"
                                                 variant="body1"
                                             >
-                                                {client.name}
+                                                {client.first_name}
                                             </Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell>
-                                        {client.email}
+                                        {client.last_name}
+                                    </TableCell>
+                                    <TableCell>
+                                        {client.company}
                                     </TableCell>
                                     <TableCell>
                                         {client.email}

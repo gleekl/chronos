@@ -4,6 +4,11 @@ main {
   left: 260px;
 }
 
+.register, .login {
+  position: absolute;
+  margin: 0 auto;
+}
+
 .navlink {
   text-decoration: none;
   color: rgb(72, 72, 72);

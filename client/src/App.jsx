@@ -97,6 +97,36 @@ const App = () => {
     if (!user) checkLoggedIn()
   }, [])
 
+  useEffect(() => {
+    const reloadProjectDuration = async () => {
+      const res = await fetch("/dashboard/projectduration")
+      const data = await res.json()
+      setProjectDuration(data)
+    }
+
+    const interval = setInterval(() => {
+      getProjectDuration()
+    }, 10000)
+
+    return () => clearInterval(interval)
+
+  }, [projectDuration])
+
+  useEffect(() => {
+    const reloadProjectSplit = async () => {
+      const res = await fetch("/dashboard/projectsplit")
+      const data = await res.json()
+      setProjectSplit(data)
+    }
+
+    const interval = setInterval(() => {
+      getProjectSplit()
+    }, 10000)
+
+    return () => clearInterval(interval)
+
+  }, [projectSplit])
+
   const handleSubmit = (whichForm) => {
     return async (fields) => {
       const res = await fetch(`/${whichForm}`, {
@@ -109,6 +139,26 @@ const App = () => {
       const data = await res.json()
       setUser(data.user)
       navigate("/");
+    }
+  }
+
+  const handleCreateClient = async (newClient) => {
+    const res = await fetch("/clients/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newClient)
+    })
+    if (res.ok) {
+      const data = await res.json()
+      setClients([
+        ...clients,
+        data
+      ])
+      navigate("/clients")
+    } else {
+      console.log("Error creating new Client.");
     }
   }
 
@@ -160,23 +210,33 @@ const App = () => {
     }
   };
 
-  // const handleEditClient = async (client) => {
-  //   const res = await fetch(`/clients/<${client.id}>`, {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(client)
-  //   })
-  //   const returnedItem = await res.json()
-  //   const index = products.indexOf(products.find((item) => item.item_id === client.item_id))
-  //   setProducts([
-  //     ...products.splice(0, index),
-  //     returnedItem,
-  //     ...products.splice(index + 1)
-  //   ])
-  //   navigate("/items")
-  // }
+  const handleEditClient = async (clientObj, clientID) => {
+    const formData = new FormData();
+
+    for (let field in clientObj) {
+      formData.append(field, clientObj[field]);
+    }
+
+    const res = await fetch(`/clients/${clientID}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (res.ok) {
+      getUsers();
+
+      let updatedClient= { ...users.find((client) => client._id === clientID) };
+
+      const index = clients.findIndex((client) => client._id === clientID);
+
+      setClients([...clients.slice(0, index), updatedClient, ...clients.slice(index + 1)]);
+
+      navigate(`/clients`);
+
+    } else {
+      console.log("Error editing user.", clientID);
+    }
+  };
 
   ////////////////////////////////////////////////////////
   // Users
@@ -215,7 +275,7 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className="App">
-        {user !== undefined && <NavigationBar />}
+        <NavigationBar />
         <main>
           {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
           <Routes>
@@ -223,8 +283,11 @@ const App = () => {
               path='/'
               element={
                 <Dashboard
-                projectDuration={projectDuration}
-                projectSplit={projectSplit}
+                  users={users}
+                  projects={projects}
+                  clients={clients}
+                  projectDuration={projectDuration}
+                  projectSplit={projectSplit}
                 />
               }
             />
@@ -273,6 +336,7 @@ const App = () => {
               element={
                 <CreateClient
                   clients={clients}
+                  handleCreateClient={handleCreateClient}
                 />
               }
             />
@@ -293,7 +357,7 @@ const App = () => {
               element={
                 <CreateProject
                   projects={projects}
-                  handleSubmit={handleSubmit}
+                  handleSubmit={handleSubmit("projects/new")}
                 />
               }
             />

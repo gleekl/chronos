@@ -20,8 +20,8 @@ import {
 
 // ----------------------------------------------------------------------
 
-const Dashboard = ({ projectDuration, projectSplit }) => {
-  console.log(projectSplit);
+const Dashboard = ({ users, projects, clients, projectDuration, projectSplit }) => {
+  console.log(users);
   const theme = useTheme();
 
   return (
@@ -33,15 +33,44 @@ const Dashboard = ({ projectDuration, projectSplit }) => {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Projects" total={30} />
+            <AppWidgetSummary title="Total Projects" total={projects.length} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Users" total={10} color="info" />
+            <AppWidgetSummary title="Total Users" total={users.length} color="info" />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Clients" total={30} color="warning" />
+            <AppWidgetSummary title="Total Clients" total={clients.length} color="warning" />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary title="Time Spent on Projects" total={30} color="warning" />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={8}>
+            <AppProjectDuration
+              title="Total Duration per Project"
+              subheader="Limited to the top 10 longest projects"
+              chartData={projectDuration.map((project) => (
+                { label: project.project, value: project.duration }
+              ))}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={4}>
+            <AppProjectSplit
+              title="Projects per User"
+              chartData={projectSplit.map((project) => (
+                { label: project.user, value: project.number_of_projects }
+              ))}
+              chartColors={[
+                theme.palette.primary.main,
+                theme.palette.chart.blue[0],
+                theme.palette.chart.violet[0],
+                theme.palette.chart.yellow[0],
+              ]}
+            />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
@@ -81,31 +110,6 @@ const Dashboard = ({ projectDuration, projectSplit }) => {
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
                 },
               ]}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppProjectSplit
-              title="Projects per User"
-              chartData={projectSplit.map((project) => (
-                { label: project.user, value: project.number_of_projects }
-              ))}
-              chartColors={[
-                theme.palette.primary.main,
-                theme.palette.chart.blue[0],
-                theme.palette.chart.violet[0],
-                theme.palette.chart.yellow[0],
-              ]}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppProjectDuration
-              title="Total Duration per Project"
-              subheader="Limited to the top 10 longest projects"
-              chartData={projectDuration.map((project) => (
-                { label: project.project, value: project.duration }
-              ))}
             />
           </Grid>
 

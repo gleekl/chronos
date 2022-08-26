@@ -1,88 +1,5 @@
 import { useState, useEffect } from 'react'
 
-// const Register = (props) => {
-//     const initialState = {
-//         first_name: '',
-//         last_name: '',
-//         email: '',
-//         phone: '',
-//         username: '',
-//         password: '',
-//     }
-
-//     const [fields, setFields] = useState(initialState)
-
-//     const handleChange = (e) => {
-//         setFields({
-//             ...fields,
-//             [e.target.name]: e.target.value
-//         })
-//         console.log(fields);
-//     }
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault()
-//         props.handleSubmit(fields)
-//         // setFields(initialState)
-//     }
-
-//     return (
-//         <form onSubmit={handleSubmit}>
-
-//             <label htmlFor="register-first_name">First Name</label>
-//             <input
-//                 onChange={handleChange}
-//                 value={fields.first_name}
-//                 name="first_name"
-//                 id="register-first_name"
-//                 type="text" />
-
-//             <label htmlFor="register-last_name">Last Name</label>
-//             <input
-//                 onChange={handleChange}
-//                 value={fields.last_name}
-//                 name="last_name"
-//                 id="register-last_name"
-//                 type="text" />
-
-//             <label htmlFor="register-email">Email</label>
-//             <input
-//                 onChange={handleChange}
-//                 value={fields.email}
-//                 name="email"
-//                 id="register-email"
-//                 type="email" />
-
-//             <label htmlFor="register-phone">Phone</label>
-//             <input
-//                 onChange={handleChange}
-//                 value={fields.phone}
-//                 name="phone"
-//                 id="register-phone"
-//                 type="tel" />
-
-//             <label htmlFor="register-username">Username</label>
-//             <input
-//                 onChange={handleChange}
-//                 value={fields.username}
-//                 name="username"
-//                 id="register-username"
-//                 type="text" />
-
-//             <label htmlFor="register-password">Password</label>
-//             <input
-//                 onChange={handleChange}
-//                 value={fields.password}
-//                 name="password"
-//                 id="register-password"
-//                 type="Password" />
-
-//             <input type="submit" value="Register" />
-
-//         </form>
-//     )
-// }
-
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -128,7 +45,7 @@ const Register = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" className="register">
                 <CssBaseline />
                 <Box
                     sx={{
