@@ -75,6 +75,12 @@ def update_user(user_id):
     cur.execute(query, (first_name, last_name, email, phone, user_id))
     g.db['connection'].commit() 
     user = g.db['cursor'].fetchone()
+
+    # Remove password_hash from json dictionary to prevent the hash from being shown.
+    user.pop('password_hash')
+
+    # Keep user in session after logging in.
+    session['user'] = user
     return jsonify(user)
 
 # # # # # # # # # # # # # # # # # # # # 
@@ -133,11 +139,11 @@ def update_client(client_id):
 # Make new client
 @app.route('/clients/new', methods=['POST'])
 def new_client():
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    email = request.form['email']
-    phone = request.form['phone']
-    company = request.form['company']
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
+    email = request.json['email']
+    phone = request.json['phone']
+    company = request.json['company']
 
     user = session.get('user', None)
     if user is None:
@@ -221,7 +227,7 @@ def update_activity(activity_id):
 # Make new activity
 @app.route('/activities/new', methods=['POST'])
 def new_activity():
-    name = request.form['first_name']
+    name = request.json['first_name']
 
     user = session.get('user', None)
     if user is None:
@@ -290,11 +296,11 @@ def show_project(project_id):
 # Create new project
 @app.route('/projects/new', methods=['POST'])
 def new_project():
-    name = request.form['name']
-    client_id = request.form['client_id']
-    date_start = request.form['date_start']
-    date_end = request.form['date_end']
-    total_duration = request.form['total_duration']
+    name = request.json['name']
+    client_id = request.json['client_id']
+    date_start = request.json['date_start']
+    date_end = request.json['date_end']
+    total_duration = request.json['total_duration']
 
     user = session.get('user', None)
     if user is None:
@@ -369,12 +375,12 @@ def show_timesheet(timesheet_id):
 # Create new timesheet
 @app.route('/timesheets/new')
 def new_timesheet():
-    client_id = request.form['client_id']
-    project_id = request.form['project_id']
-    activity_id = request.form['activity_id']
-    date = request.form['date']
-    duration = request.form['duration']
-    comments = request.form['comments']
+    client_id = request.json['client_id']
+    project_id = request.json['project_id']
+    activity_id = request.json['activity_id']
+    date = request.json['date']
+    duration = request.json['duration']
+    comments = request.json['comments']
 
     user = session.get('user', None)
     if user is None:
@@ -404,7 +410,6 @@ def project_duration():
         FROM projects
         JOIN clients ON projects.user_id = clients.id
         ORDER BY total_duration DESC
-        LIMIT 10
     """
 
     g.db['cursor'].execute(query)

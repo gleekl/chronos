@@ -15,7 +15,8 @@ const ProfileForm = ({ user, users, handleEditUser }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    handleEditUser(values)
+    handleEditUser(values, user.id)
+    console.log('test');
   }
 
   const handleChange = (event) => {
@@ -121,6 +122,7 @@ const ProfileForm = ({ user, users, handleEditUser }) => {
           <Button
             color="primary"
             variant="contained"
+            type='submit'
           >
             Save details
           </Button>

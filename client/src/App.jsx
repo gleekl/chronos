@@ -20,9 +20,10 @@ const App = () => {
   // Logged in user
   const [user, setUser] = useState(null)
   const [authorised, setAuthorised] = useState(null);
-
+  console.log(user);
   // Users
   const [users, setUsers] = useState([])
+  console.log(users);
   // Clients
   const [clients, setClients] = useState([])
   // Projects
@@ -93,6 +94,7 @@ const App = () => {
       const res = await fetch('/is-authenticated')
       const data = await res.json()
       setUser(data.user)
+      console.log("line 97", data.user);
     }
     if (!user) checkLoggedIn()
   }, [])
@@ -105,13 +107,14 @@ const App = () => {
     }
 
     const interval = setInterval(() => {
-      getProjectDuration()
+      reloadProjectDuration()
     }, 10000)
 
     return () => clearInterval(interval)
 
   }, [projectDuration])
 
+  // 
   useEffect(() => {
     const reloadProjectSplit = async () => {
       const res = await fetch("/dashboard/projectsplit")
@@ -120,7 +123,7 @@ const App = () => {
     }
 
     const interval = setInterval(() => {
-      getProjectSplit()
+      reloadProjectSplit()
     }, 10000)
 
     return () => clearInterval(interval)
@@ -188,7 +191,7 @@ const App = () => {
     for (let field in userObj) {
       formData.append(field, userObj[field]);
     }
-
+    console.log(...formData);
     const res = await fetch(`/users/${userID}`, {
       method: "PUT",
       body: formData,
@@ -203,7 +206,7 @@ const App = () => {
 
       setUsers([...users.slice(0, index), updatedUser, ...users.slice(index + 1)]);
 
-      navigate(`/`);
+      navigate(`/profile`);
 
     } else {
       console.log("Error editing user.", userID);
@@ -277,7 +280,7 @@ const App = () => {
       <div className="App">
         <NavigationBar />
         <main>
-          {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
+          {/* {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>} */}
           <Routes>
             <Route
               path='/'
@@ -294,7 +297,7 @@ const App = () => {
             <Route
               path='/profile'
               element={
-                <Profile
+                user && <Profile
                   user={user}
                   users={users}
                   handleEditUser={handleEditUser}

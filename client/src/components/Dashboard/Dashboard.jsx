@@ -21,7 +21,7 @@ import {
 // ----------------------------------------------------------------------
 
 const Dashboard = ({ users, projects, clients, projectDuration, projectSplit }) => {
-  console.log(users);
+
   const theme = useTheme();
 
   return (
@@ -49,6 +49,19 @@ const Dashboard = ({ users, projects, clients, projectDuration, projectSplit }) 
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
+            <AppTasks
+              title="Tasks"
+              list={[
+                { id: '1', label: 'README' },
+                { id: '2', label: 'Drink water!' },
+                { id: '3', label: 'Time travel' },
+                { id: '4', label: 'Worl Cop' },
+                { id: '5', label: 'Sprint Showcase' },
+              ]}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={8}>
             <AppProjectDuration
               title="Total Duration per Project"
               subheader="Limited to the top 10 longest projects"
@@ -72,7 +85,7 @@ const Dashboard = ({ users, projects, clients, projectDuration, projectSplit }) 
               ]}
             />
           </Grid>
-
+{/*           
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
@@ -124,20 +137,7 @@ const Dashboard = ({ users, projects, clients, projectDuration, projectSplit }) 
               ]}
               chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
             />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppTasks
-              title="Tasks"
-              list={[
-                { id: '1', label: 'Create FireStone Logo' },
-                { id: '2', label: 'Add SCSS and JS files if required' },
-                { id: '3', label: 'Stakeholder Meeting' },
-                { id: '4', label: 'Scoping & Estimations' },
-                { id: '5', label: 'Sprint Showcase' },
-              ]}
-            />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

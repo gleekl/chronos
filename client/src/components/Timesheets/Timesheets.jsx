@@ -101,7 +101,13 @@ const headCells = [
     id: 'duration',
     numeric: true,
     disablePadding: false,
-    label: 'Duration',
+    label: 'Duration (min)',
+  },
+  {
+    id: 'stopwatch',
+    numeric: true,
+    disablePadding: false,
+    label: 'Stopwatch',
   },
   {
     id: 'comments',
@@ -135,7 +141,8 @@ const EnhancedTableHead = (props) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            // align={headCell.numeric ? 'right' : 'left'}
+            align={'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -346,12 +353,13 @@ const Timesheets = ({ timesheets }) => {
                         >
                           {timesheet.user}
                         </TableCell>
-                        <TableCell align="right">{timesheet.client}</TableCell>
-                        <TableCell align="right">{timesheet.project}</TableCell>
-                        <TableCell align="right">{timesheet.activity}</TableCell>
-                        <TableCell align="right">{timesheet.date}</TableCell>
-                        <TableCell align="right"><Stopwatch /></TableCell>
-                        <TableCell align="right">{timesheet.comments}</TableCell>
+                        <TableCell align="left">{timesheet.client}</TableCell>
+                        <TableCell align="left">{timesheet.project}</TableCell>
+                        <TableCell align="left">{timesheet.activity}</TableCell>
+                        <TableCell align="left">{timesheet.date}</TableCell>
+                        <TableCell align="left">{timesheet.duration}</TableCell>
+                        <TableCell align="left"><Stopwatch /></TableCell>
+                        <TableCell align="left">{timesheet.comments}</TableCell>
                       </TableRow>
                     );
                   })}

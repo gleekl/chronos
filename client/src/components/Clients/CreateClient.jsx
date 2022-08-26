@@ -18,20 +18,18 @@ const initialState = {
 
 const CreateClient = ({ handleCreateClient }) => {
   const [fields, setFields] = useState(initialState);
-  const [image, setImage] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     const updatedFields = {
       ...fields,
       [name]: value,
     };
     setFields(updatedFields);
     console.log(updatedFields);
-    // const isDisabled = Object.values(updatedFields).some((v) => !v);
-    // setButtonDisabled(isDisabled);
+    const isDisabled = Object.values(updatedFields).some((v) => !v);
+    setButtonDisabled(isDisabled);
   };
 
   const handleSubmit = (e) => {
@@ -159,6 +157,7 @@ const CreateClient = ({ handleCreateClient }) => {
               <Button
                 variant="contained"
                 type="submit"
+                disabled={buttonDisabled}
               >
                 Submit
               </Button>
