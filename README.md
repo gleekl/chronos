@@ -1,4 +1,4 @@
-# Capstone: Chronos
+# Chronos
 
 This is a HR management app built over a week and a half. 
 </br>
