@@ -9,17 +9,6 @@ Username: demo
 Password: demo
 </br>
 
-
-## Task Brief
-
-* **Use either an Express API or a Flask API**
-* **Implement thoughtful user stories**
-* **Be deployed online via Heroku**
-* **Be a full-stack application by making your own backend and your own front-end.**
-* **Be a complete product, which means that it is usable from head-to-tail, in the environment it is meant for.**
-* **Implement thoughtful user stories that are significant enough to help you know which features to build and which to scrap**
-* **Implement full CRUD the app has to be able to create, read, update and delete data from the database**
-
 ## Technologies Used
 
 * JavaScript
