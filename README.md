@@ -25,7 +25,7 @@ Password: demo
 * Heroku
 
 ## App Design
-My aim was to create a HR management/timesheet application that had a stopwatch for each task for the day. 
+My aim was to create a HR management/timesheet application that has a stopwatch for each task for the day. 
 
 Front end design was achieved using Material UI framework for styling. 
 
@@ -39,11 +39,11 @@ As a business owner, I want to see how much time has been spent on each project 
 
 ## Challenges
 ### PostgreSQL Database Relationships.
-The initial 
+Learning PostgreSQL was definitely easier than when I was introduced to MongoDB. Having that initial exposure to a NoSQL database then moving on to an SQL database definitely helped. I am still currently working on learning about relational database and I certainly faced quite a few difficulties as I worked on the project. Initially, it was not too difficult. The difficulty came when I needed to make changes to the schemas of each data table. I saw that some of the initial relationships I made during the planning phase did not make sense when I finally got to the coding part of the project.
 
 ### Linking the stopwatch timer to the database
-This is a challenging 
+Currently, the stopwatch timer is not linked to the database and is currently just a plain timer. It is challenging to get it to work and to link it to the database but as of now, it is a WIP feature.
 
 
 ## Acknowledgement
-A big thank to Dido @ General Assembly who help to guide us to the right direction when we get stuck, thanks Hugh @ General Assembly for sharing his knowledge!
+A big thanks to Dido who helped guide us to the right direction when whenever we needed help and to Hugh, Mandy, and Rod for sharing their knowledge as well!
