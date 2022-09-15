@@ -5,7 +5,7 @@ CREATE TABLE projects (
     name TEXT NOT NULL,
     user_id SERIAL REFERENCES users (id) ON DELETE CASCADE,
     client_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
-    date_start TIMESTAMP,
-    date_end TIMESTAMP,
+    start_date DATE,
+    end_date DATE,
     total_duration INTEGER
 )

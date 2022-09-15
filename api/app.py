@@ -12,7 +12,7 @@ import psycopg2
 import os
 import cloudinary.uploader
 
-from .db import get_db, close_db
+from db import get_db, close_db
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -268,7 +268,7 @@ def delete_activity(activity_id):
 @app.route('/projects')
 def projects():
     query = """
-        SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, date_start, date_end, total_duration
+        SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, start_date, end_date, total_duration
         FROM projects
         JOIN users ON projects.user_id = users.id
         JOIN clients ON projects.user_id = clients.id;
@@ -283,7 +283,7 @@ def show_project(project_id):
     cur = g.db['cursor']
 
     query = """
-        SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, date_start, date_end, total_duration
+        SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, start_date, end_date, total_duration
         FROM projects
         JOIN users ON projects.user_id = users.id
         JOIN clients ON projects.user_id = clients.id;
@@ -298,8 +298,8 @@ def show_project(project_id):
 def new_project():
     name = request.json['name']
     client_id = request.json['client_id']
-    date_start = request.json['date_start']
-    date_end = request.json['date_end']
+    start_date = request.json['start_date']
+    end_date = request.json['end_date']
     total_duration = request.json['total_duration']
 
     user = session.get('user', None)
@@ -308,13 +308,35 @@ def new_project():
 
     query = """
         INSERT INTO projects
-        (name, user_id, client_id, date_start, date_end, total_duration)
+        (name, user_id, client_id, start_date, end_date, total_duration)
         VALUES (%s, %s, %s, %s, %s, %s)
         RETURNING *
     """
 
-    g.db['cursor'].execute(query, (name, user['id'], client_id, date_start, date_end, total_duration))
+    g.db['cursor'].execute(query, (name, user['id'], client_id, start_date, end_date, total_duration))
     g.db['connection'].commit()
+    project = g.db['cursor'].fetchone()
+    return jsonify(project)
+
+# Update selected project
+@app.route('/projects/<project_id>', methods=['PUT'])
+def update_project(project_id):
+    name = request.json['name']
+    client_id = request.json['client_id']
+    start_date = request.json['start_date']
+    end_date = request.json['end_date']
+    total_duration = request.json['total_duration']
+
+    query = """
+        UPDATE projects
+        SET name = %s, client_id = %s, start_date = %s, end_date = %s, total_duration = %s
+        WHERE projects.id = %s
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (name, client_id, start_date, end_date, total_duration, project_id))
+    g.db['connection'].commit() 
     project = g.db['cursor'].fetchone()
     return jsonify(project)
 
@@ -410,6 +432,7 @@ def project_duration():
         FROM projects
         JOIN clients ON projects.user_id = clients.id
         ORDER BY total_duration DESC
+        LIMIT 10
     """
 
     g.db['cursor'].execute(query)
@@ -451,10 +474,12 @@ def register():
         RETURNING id, first_name, last_name, email, phone, username
     """
     cur = g.db['cursor']
+
     try:
         cur.execute(query, (first_name, last_name, email, phone, username, password_hash))
     except psycopg2.IntegrityError:
         return jsonify(success=False, msg='Username already taken.')
+
     g.db['connection'].commit()
     user = cur.fetchone()
     session['user'] = user

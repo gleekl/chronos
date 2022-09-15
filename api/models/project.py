@@ -16,6 +16,6 @@ class Project(db.Model):
         backref='project',
         cascade='all, delete'
     )
-    date_start = db.Column(db.DateTime, default=datetime)
-    date_end = db.Column(db.DateTime, default=datetime)
+    start_date = db.Column(db.DateTime, default=datetime)
+    end_date = db.Column(db.DateTime, default=datetime)
     total_DURATION = db.Column(db.Integer)
