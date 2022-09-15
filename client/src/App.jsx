@@ -20,10 +20,8 @@ const App = () => {
   // Logged in user
   const [user, setUser] = useState(null)
   const [authorised, setAuthorised] = useState(null);
-  console.log(user);
   // Users
   const [users, setUsers] = useState([])
-  console.log(users);
   // Clients
   const [clients, setClients] = useState([])
   // Projects
@@ -94,41 +92,40 @@ const App = () => {
       const res = await fetch('/is-authenticated')
       const data = await res.json()
       setUser(data.user)
-      console.log("line 97", data.user);
     }
     if (!user) checkLoggedIn()
   }, [])
 
-  useEffect(() => {
-    const reloadProjectDuration = async () => {
-      const res = await fetch("/dashboard/projectduration")
-      const data = await res.json()
-      setProjectDuration(data)
-    }
+  // useEffect(() => {
+  //   const reloadProjectDuration = async () => {
+  //     const res = await fetch("/dashboard/projectduration")
+  //     const data = await res.json()
+  //     setProjectDuration(data)
+  //   }
 
-    const interval = setInterval(() => {
-      reloadProjectDuration()
-    }, 10000)
+  //   const interval = setInterval(() => {
+  //     reloadProjectDuration()
+  //   }, 10000)
 
-    return () => clearInterval(interval)
+  //   return () => clearInterval(interval)
 
-  }, [projectDuration])
+  // }, [projectDuration])
 
-  // 
-  useEffect(() => {
-    const reloadProjectSplit = async () => {
-      const res = await fetch("/dashboard/projectsplit")
-      const data = await res.json()
-      setProjectSplit(data)
-    }
+  // // 
+  // useEffect(() => {
+  //   const reloadProjectSplit = async () => {
+  //     const res = await fetch("/dashboard/projectsplit")
+  //     const data = await res.json()
+  //     setProjectSplit(data)
+  //   }
 
-    const interval = setInterval(() => {
-      reloadProjectSplit()
-    }, 10000)
+  //   const interval = setInterval(() => {
+  //     reloadProjectSplit()
+  //   }, 10000)
 
-    return () => clearInterval(interval)
+  //   return () => clearInterval(interval)
 
-  }, [projectSplit])
+  // }, [projectSplit])
 
   const handleSubmit = (whichForm) => {
     return async (fields) => {
@@ -165,6 +162,26 @@ const App = () => {
     }
   }
 
+  const handleCreateProject = async (newProject) => {
+    const res = await fetch("/projects/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newProject)
+    })
+    if (res.ok) {
+      const data = await res.json()
+      setProjects([
+        ...projects,
+        data
+      ])
+      navigate("/projects")
+    } else {
+      console.log("Error creating new Project.");
+    }
+  }
+
   // const handleEditUser = (editedUser) => {
   //   return async (fields) => {
   //     const res = await fetch(`/users/${editedUser.id}`, {
@@ -187,7 +204,6 @@ const App = () => {
 
   const handleEditUser = async (userObj, userID) => {
     const formData = new FormData();
-
     for (let field in userObj) {
       formData.append(field, userObj[field]);
     }
@@ -199,15 +215,10 @@ const App = () => {
 
     if (res.ok) {
       getUsers();
-
       let updatedUser = { ...users.find((user) => user._id === userID) };
-
       const index = users.findIndex((user) => user._id === userID);
-
       setUsers([...users.slice(0, index), updatedUser, ...users.slice(index + 1)]);
-
       navigate(`/profile`);
-
     } else {
       console.log("Error editing user.", userID);
     }
@@ -215,7 +226,6 @@ const App = () => {
 
   const handleEditClient = async (clientObj, clientID) => {
     const formData = new FormData();
-
     for (let field in clientObj) {
       formData.append(field, clientObj[field]);
     }
@@ -227,17 +237,34 @@ const App = () => {
 
     if (res.ok) {
       getUsers();
-
-      let updatedClient= { ...users.find((client) => client._id === clientID) };
-
+      let updatedClient = { ...users.find((client) => client._id === clientID) };
       const index = clients.findIndex((client) => client._id === clientID);
-
       setClients([...clients.slice(0, index), updatedClient, ...clients.slice(index + 1)]);
-
       navigate(`/clients`);
-
     } else {
       console.log("Error editing user.", clientID);
+    }
+  };
+
+  const handleEditProject = async (projectObj, projectID) => {
+    const formData = new FormData();
+    for (let field in projectObj) {
+      formData.append(field, projectObj[field]);
+    }
+    console.log(...formData);
+    const res = await fetch(`/projects/${projectID}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (res.ok) {
+      getProjects();
+      let updatedProject = { ...projects.find((project) => project._id === projectID) };
+      const index = projects.findIndex((project) => project._id === projectID);
+      setProjects([...projects.slice(0, index), updatedProject, ...projects.slice(index + 1)]);
+      navigate(`/projects`);
+    } else {
+      console.log("Error editing user.", projectID);
     }
   };
 
@@ -324,6 +351,7 @@ const App = () => {
                 />
               }
             />
+
             {/* Clients */}
             <Route
               path='/clients'
@@ -333,6 +361,7 @@ const App = () => {
                 />
               }
             />
+
             {/* Create new client */}
             <Route
               path='/clients/new'
@@ -360,7 +389,9 @@ const App = () => {
               element={
                 <CreateProject
                   projects={projects}
-                  handleSubmit={handleSubmit("projects/new")}
+                  user={user}
+                  clients={clients}
+                  handleCreateProject={handleCreateProject}
                 />
               }
             />

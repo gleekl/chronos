@@ -6,12 +6,7 @@ import os
 
 def get_db():
     if 'db' not in g:
-        connection = psycopg2.connect(
-            host = os.environ.get('DB_HOST'),
-            database = os.environ.get('DB_DATABASE'),
-            user = os.environ.get('DB_USER'),
-            password = os.environ.get('DB_PASSWORD')
-        )
+        connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         g.db = {
             'connection': connection,

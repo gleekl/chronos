@@ -22,7 +22,7 @@ const Profile = ({ user, users, handleEditUser }) => {
           py: 8
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" className='profile'>
           <Typography
             sx={{ mb: 3 }}
             variant="h4"

@@ -13,3 +13,10 @@ main {
   text-decoration: none;
   color: rgb(72, 72, 72);
 }
+
+/* Profile */
+.profile {
+  position: relative;
+  width: 80%;
+  left: -200px;
+}

@@ -5,7 +5,8 @@ from flask import (
     jsonify,
     request,
     g,
-    session
+    session,
+    render_template
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
@@ -14,7 +15,11 @@ import cloudinary.uploader
 
 from db import get_db, close_db
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder='client/build/static',
+    template_folder='client/build'
+    )
 app.secret_key = os.environ.get('SECRET_KEY')
 
 @app.before_request
@@ -537,3 +542,12 @@ def is_authenticated():
         return jsonify(success=True, user=user)
     else:
         return jsonify(success=False, msg='User is not logged in.')
+
+      
+# # # # # # # # # # # # # # # # # # # # 
+# DEPLOYMENT
+# # # # # # # # # # # # # # # # # # # #   
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react_app(path):
+    return render_template('index.html')

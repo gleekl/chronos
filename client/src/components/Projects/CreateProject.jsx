@@ -1,23 +1,30 @@
 import { useState } from "react";
-import * as React from "react";
+import { Link } from "react-router-dom";
+
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
-import { Link } from "react-router-dom";
+// Dropdown Selection
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const initialState = {
-  projectName: "",
-  client: "",
-  user: "",
-  startDate: "",
-  endDate: "",
-  totalDuration: 0
+  name: "",
+  client_id: "",
+  // user_id: "",
+  start_date: "",
+  end_date: "",
+  total_duration: 0
 };
 
-const CreateProject = (props) => {
+const CreateProject = ({ projects, user, clients, handleCreateProject }) => {
   const [fields, setFields] = useState(initialState);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
@@ -32,18 +39,20 @@ const CreateProject = (props) => {
 
     const isDisabled = Object.values(updatedFields).some((v) => !v);
     setButtonDisabled(isDisabled);
+    console.log(user.id);
+    console.log(updatedFields);
   };
 
   const handleCreate = (e) => {
     e.preventDefault();
-    props.handleSubmit({ ...fields });
-    setFields(initialState);
+    handleCreateProject({ ...fields });
+    // setFields(initialState);
   };
 
   return (
     <>
       <div className="project-div">
-        <h1 className="project-heading">Create new project</h1>
+        <h1 className="project-heading">Create a new project</h1>
         <form onSubmit={handleCreate} className="project-form">
           <div>
             <Box
@@ -55,19 +64,18 @@ const CreateProject = (props) => {
               autoComplete="off"
             >
               <TextField
-                id="outlined-basic projectName"
+                id="outlined-basic name"
                 label="Project Name"
                 variant="outlined"
                 name="name"
                 value={fields.name}
                 onChange={handleChange}
-                placeholder="name"
                 type="text"
               />
             </Box>
           </div>
 
-          <div>
+          {/* <div>
             <Box
               // component="form"
               sx={{
@@ -83,11 +91,95 @@ const CreateProject = (props) => {
                 name="client"
                 value={fields.client}
                 onChange={handleChange}
-                placeholder="client"
                 type="text"
               />
             </Box>
+          </div> */}
+
+          <div>
+            <Box
+              // component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-helper-label">Client</InputLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  name="client_id"
+                  value={fields.client_id}
+                  label="Client"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {clients.map((client) => {
+                    return (
+                      <MenuItem name="client_id" value={client.id}>{`${client.first_name} ${client.last_name}`}</MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
           </div>
+
+          {/* <div>
+            <Box
+              // component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-read-only-input"
+                label="User"
+                name="user_id"
+                defaultValue={user}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </Box>
+          </div> */}
+
+          {/* <div>
+            <Box
+              // component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-helper-label">User</InputLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  name="user"
+                  value={fields.user}
+                  label="User"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {users.map((user) => {
+                    return (
+                      <MenuItem name="user" value={user.first_name}>{`${user.first_name} ${user.last_name}`}</MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+          </div> */}
 
           <div>
             <Box
@@ -100,13 +192,12 @@ const CreateProject = (props) => {
             >
               <TextField
                 InputLabelProps={{ shrink: true }}
-                id="outlined-basic startDate"
+                id="outlined-basic start_date"
                 label="Start Date"
                 variant="outlined"
-                name="startDate"
-                value={fields.startDate}
+                name="start_date"
+                value={fields.start_date}
                 onChange={handleChange}
-                placeholder="startDate"
                 type="date"
               />
             </Box>
@@ -125,10 +216,9 @@ const CreateProject = (props) => {
                 id="outlined-basic endDate"
                 label="End Date"
                 variant="outlined"
-                name="endDate"
-                value={fields.endDate}
+                name="end_date"
+                value={fields.end_date}
                 onChange={handleChange}
-                placeholder="endDate"
                 type="date"
               />
             </Box>
@@ -146,10 +236,9 @@ const CreateProject = (props) => {
                 id="outlined-basic totalDuration"
                 label="Total Duration"
                 variant="outlined"
-                name="totalCost"
-                value={fields.totalCost}
+                name="total_duration"
+                value={fields.total_duration}
                 onChange={handleChange}
-                placeholder="Total duration"
                 type="number"
               />
             </Box>
@@ -160,7 +249,7 @@ const CreateProject = (props) => {
               <Button
                 variant="contained"
                 type="submit"
-                disabled={buttonDisabled}
+              // disabled={buttonDisabled}
               >
                 Submit
               </Button>
