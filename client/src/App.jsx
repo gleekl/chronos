@@ -96,6 +96,10 @@ const App = () => {
     if (!user) checkLoggedIn()
   }, [])
 
+  ////////////////////////////////////////////////////////
+  // Chart auto-refresh
+  ////////////////////////////////////////////////////////
+  
   // useEffect(() => {
   //   const reloadProjectDuration = async () => {
   //     const res = await fetch("/dashboard/projectduration")
