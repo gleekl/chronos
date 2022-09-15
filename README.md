@@ -1,9 +1,11 @@
 # Capstone: Chronos
 
-This is a team project built within 4 days in a group of 3 student software engineers. We all love traveling and documenting our trips, so we made a Travel Log to make documenting trips easier for people like us! 
+This is a HR management app built over a week and a half. 
 </br>
 
-Please use the login details below to use the app.
+Link to the app can be found [here](https://chronos-hr.herokuapp.com/).
+
+Login details below:
 
 Username: demo  
 Password: demo
@@ -23,7 +25,7 @@ Password: demo
 * Heroku
 
 ## App Design
-My aim was to create a timesheet application that had a stopwatch for each task for the day. 
+My aim was to create a HR management/timesheet application that had a stopwatch for each task for the day. 
 
 Front end design was achieved using Material UI framework for styling. 
 
