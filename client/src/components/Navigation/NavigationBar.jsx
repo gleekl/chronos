@@ -24,55 +24,55 @@ import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
 
 const drawerWidth = 240;
 
-const navItems = [
-    {
-        text: "Dashboard",
-        component: <DashboardIcon />,
-        link: "/"
-    },
-    {
-        text: "Profile",
-        component: <ProfileIcon />,
-        link: "/profile"
-    },
-    {
-        text: "Users",
-        component: <UsersIcon />,
-        link: "/users"
-    },
-    {
-        text: "Clients",
-        component: <UsersIcon />,
-        link: "/clients"
-    },
-    {
-        text: "Projects",
-        component: <ProjectIcon />,
-        link: "/projects"
-    },
-    {
-        text: "Timesheets",
-        component: <TimeIcon />,
-        link: "/timesheets"
-    },
-    {
-        text: "Register",
-        component: <ProfileIcon />,
-        link: "/register"
-    },
-    {
-        text: "Login",
-        component: <ProfileIcon />,
-        link: "/login"
-    },
-    {
-        text: "Logout",
-        component: <ProfileIcon />,
-        link: "/logout"
-    }
-]
+const NavigationBar = ({ user, authorised }) => {
+    const navItems = [
+        {
+            text: "Dashboard",
+            component: <DashboardIcon />,
+            link: "/"
+        },
+        {
+            text: "Profile",
+            component: <ProfileIcon />,
+            link: "/profile"
+        },
+        {
+            text: "Users",
+            component: <UsersIcon />,
+            link: "/users"
+        },
+        {
+            text: "Clients",
+            component: <UsersIcon />,
+            link: "/clients"
+        },
+        {
+            text: "Projects",
+            component: <ProjectIcon />,
+            link: "/projects"
+        },
+        {
+            text: "Timesheets",
+            component: <TimeIcon />,
+            link: "/timesheets"
+        },
+        // {
+        //     text: "Register",
+        //     component: <ProfileIcon />,
+        //     link: "/register"
+        // },
+        // {
+        //     text: "Login",
+        //     component: <ProfileIcon />,
+        //     link: "/login"
+        // },
+        // {
+        //     text: "Logout",
+        //     component: <ProfileIcon />,
+        //     link: "/logout"
+        // }
+    ]
 
-const NavigationBar = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -91,7 +91,9 @@ const NavigationBar = () => {
                 <Toolbar />
                 <Divider />
                 <List>
-                    {navItems.map(({ text, component, link }) => (
+                    {user ? <p>Logged in as {user.first_name}.</p> : <p>Please sign in or register.</p>}
+                    {/* Map  */}
+                    {user && navItems.map(({ text, component, link }) => (
                         <NavLink to={link} className="navlink">
                             <ListItem key={text} disablePadding>
                                 <ListItemButton>
@@ -103,6 +105,41 @@ const NavigationBar = () => {
                             </ListItem>
                         </NavLink>
                     ))}
+                    {user ?
+                        <NavLink to="/logout" className="navlink">
+                            <ListItem key="Logout" disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <TimeIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Logout" />
+                                </ListItemButton>
+                            </ListItem>
+                        </NavLink>
+                        :
+                        <NavLink to="/login" className="navlink">
+                            <ListItem key="Login" disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <TimeIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Login" />
+                                </ListItemButton>
+                            </ListItem>
+                        </NavLink>
+                    }
+                    {!user &&
+                        <NavLink to="/register" className="navlink">
+                            <ListItem key="Register" disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <TimeIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Register" />
+                                </ListItemButton>
+                            </ListItem>
+                        </NavLink>
+                    }
                 </List>
                 <Divider />
             </Drawer>

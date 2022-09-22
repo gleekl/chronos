@@ -88,6 +88,7 @@ def update_user(user_id):
     session['user'] = user
     return jsonify(user)
 
+
 # # # # # # # # # # # # # # # # # # # # 
 # CLIENTS 
 # # # # # # # # # # # # # # # # # # # # 

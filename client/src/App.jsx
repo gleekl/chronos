@@ -15,6 +15,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import ThemeProvider from './theme';
 import CreateProject from './components/Projects/CreateProject';
 import CreateClient from './components/Clients/CreateClient';
+import ProtectedRoute from './components/Protected/ProtectedRoute';
 
 const App = () => {
   // Logged in user
@@ -87,19 +88,10 @@ const App = () => {
     setProjectSplit(data)
   }
 
-  useEffect(() => {
-    const checkLoggedIn = async () => {
-      const res = await fetch('/is-authenticated')
-      const data = await res.json()
-      setUser(data.user)
-    }
-    if (!user) checkLoggedIn()
-  }, [])
-
   ////////////////////////////////////////////////////////
   // Chart auto-refresh
   ////////////////////////////////////////////////////////
-  
+
   // useEffect(() => {
   //   const reloadProjectDuration = async () => {
   //     const res = await fetch("/dashboard/projectduration")
@@ -281,6 +273,7 @@ const App = () => {
     })
     const data = await res.json()
     if (data.success) setUser(null)
+    setAuthorised(false)
     navigate('/login')
   }
 
@@ -289,14 +282,14 @@ const App = () => {
     navigate("/");
   };
 
-  const checkIfLoggedIn = async () => {
-    const res = await fetch("/is-authenticated");
-    const data = await res.json();
-    setAuthorised(data.authorised);
-  };
-
   useEffect(() => {
-    checkIfLoggedIn();
+    const checkIfLoggedIn = async () => {
+      const res = await fetch("/is-authenticated");
+      const data = await res.json();
+      setAuthorised(data.user);
+    };
+    if (!user) checkIfLoggedIn();
+
     getUsers()
     getClients()
     getProjects()
@@ -309,30 +302,33 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className="App">
-        <NavigationBar />
+        <NavigationBar user={user} />
         <main>
           {/* {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>} */}
           <Routes>
             <Route
               path='/'
               element={
+
                 <Dashboard
+                  user={user}
                   users={users}
                   projects={projects}
                   clients={clients}
                   projectDuration={projectDuration}
                   projectSplit={projectSplit}
                 />
+
               }
             />
             <Route
               path='/profile'
               element={
-                user && <Profile
-                  user={user}
-                  users={users}
-                  handleEditUser={handleEditUser}
-                />
+                  <Profile
+                    user={user}
+                    users={users}
+                    handleEditUser={handleEditUser}
+                  />
               }
             />
 
@@ -340,9 +336,11 @@ const App = () => {
             <Route
               path='/timesheets'
               element={
+
                 <Timesheets
                   timesheets={timesheets}
                 />
+
               }
             />
 
@@ -350,9 +348,11 @@ const App = () => {
             <Route
               path='/users'
               element={
+
                 <Users
                   users={users}
                 />
+
               }
             />
 
@@ -360,9 +360,11 @@ const App = () => {
             <Route
               path='/clients'
               element={
+
                 <Clients
                   clients={clients}
                 />
+
               }
             />
 
@@ -370,10 +372,12 @@ const App = () => {
             <Route
               path='/clients/new'
               element={
+
                 <CreateClient
                   clients={clients}
                   handleCreateClient={handleCreateClient}
                 />
+
               }
             />
 
@@ -381,9 +385,11 @@ const App = () => {
             <Route
               path='/projects'
               element={
+
                 <Projects
                   projects={projects}
                 />
+
               }
             />
 
@@ -391,12 +397,14 @@ const App = () => {
             <Route
               path='/projects/new'
               element={
+
                 <CreateProject
                   projects={projects}
                   user={user}
                   clients={clients}
                   handleCreateProject={handleCreateProject}
                 />
+
               }
             />
 

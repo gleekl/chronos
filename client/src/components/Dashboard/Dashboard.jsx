@@ -20,15 +20,14 @@ import {
 
 // ----------------------------------------------------------------------
 
-const Dashboard = ({ users, projects, clients, projectDuration, projectSplit }) => {
-
+const Dashboard = ({ user, users, projects, clients, projectDuration, projectSplit }) => {
   const theme = useTheme();
 
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          {user ? `Welcome back, ${user.first_name}!` : `Log in or sign up.`}
         </Typography>
 
         <Grid container spacing={3}>
