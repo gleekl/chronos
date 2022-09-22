@@ -302,7 +302,7 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className="App">
-        <NavigationBar user={user} />
+        <NavigationBar user={user} authorised={authorised} />
         <main>
           {/* {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>} */}
           <Routes>
