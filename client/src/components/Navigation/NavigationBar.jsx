@@ -56,21 +56,6 @@ const NavigationBar = ({ user, authorised }) => {
             component: <TimeIcon />,
             link: "/timesheets"
         },
-        // {
-        //     text: "Register",
-        //     component: <ProfileIcon />,
-        //     link: "/register"
-        // },
-        // {
-        //     text: "Login",
-        //     component: <ProfileIcon />,
-        //     link: "/login"
-        // },
-        // {
-        //     text: "Logout",
-        //     component: <ProfileIcon />,
-        //     link: "/logout"
-        // }
     ]
 
     return (
