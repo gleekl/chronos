@@ -16,7 +16,6 @@ const ProfileForm = ({ user, users, handleEditUser }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     handleEditUser(values, user.id)
-    console.log('test');
   }
 
   const handleChange = (event) => {

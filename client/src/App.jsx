@@ -208,7 +208,6 @@ const App = () => {
     for (let field in userObj) {
       formData.append(field, userObj[field]);
     }
-    console.log(...formData);
     const res = await fetch(`/users/${userID}`, {
       method: "PUT",
       body: formData,
@@ -252,7 +251,6 @@ const App = () => {
     for (let field in projectObj) {
       formData.append(field, projectObj[field]);
     }
-    console.log(...formData);
     const res = await fetch(`/projects/${projectID}`, {
       method: "PUT",
       body: formData,

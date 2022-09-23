@@ -46,7 +46,6 @@ const Projects = ({ projects, ...rest }) => {
     };
 
     const handleSelectOne = (event, id) => {
-        console.log(id);
         const selectedIndex = selectedProjectIds.indexOf(id);
         let newSelectedProjectIds = [];
 
@@ -73,8 +72,6 @@ const Projects = ({ projects, ...rest }) => {
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
     };
-
-    console.log(selectedProjectIds);
 
     return (
         <Container>

@@ -34,7 +34,6 @@ const Register = (props) => {
             ...fields,
             [e.target.name]: e.target.value
         })
-        console.log(fields);
     }
 
     const handleSubmit = (e) => {

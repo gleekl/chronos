@@ -39,8 +39,6 @@ const CreateProject = ({ projects, user, clients, handleCreateProject }) => {
 
     const isDisabled = Object.values(updatedFields).some((v) => !v);
     setButtonDisabled(isDisabled);
-    console.log(user.id);
-    console.log(updatedFields);
   };
 
   const handleCreate = (e) => {

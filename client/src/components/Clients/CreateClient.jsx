@@ -27,7 +27,7 @@ const CreateClient = ({ handleCreateClient }) => {
       [name]: value,
     };
     setFields(updatedFields);
-    console.log(updatedFields);
+    
     const isDisabled = Object.values(updatedFields).some((v) => !v);
     setButtonDisabled(isDisabled);
   };
