@@ -494,7 +494,7 @@ def register():
 # # # # # # # # # # # # # # # # # # # # 
 # LOGIN
 # # # # # # # # # # # # # # # # # # # # 
-@app.route('/api/login', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     username = request.json['username']
     password = request.json['password']
@@ -528,7 +528,7 @@ def login():
 # # # # # # # # # # # # # # # # # # # # 
 # LOGOUT
 # # # # # # # # # # # # # # # # # # # # 
-@app.route('/api/logout', methods=['POST'])
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user', None)
     return jsonify(success=True)
@@ -536,7 +536,7 @@ def logout():
 # # # # # # # # # # # # # # # # # # # # 
 # AUTHENTICATION
 # # # # # # # # # # # # # # # # # # # # 
-@app.route('/api/is-authenticated')
+@app.route('/is-authenticated')
 def is_authenticated():
     user = session.get('user', None)
     if user:

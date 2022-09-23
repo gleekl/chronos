@@ -125,7 +125,7 @@ const App = () => {
 
   const handleSubmit = (whichForm) => {
     return async (fields) => {
-      const res = await fetch(`/api/${whichForm}`, {
+      const res = await fetch(`/${whichForm}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const App = () => {
   }
 
   const handleCreateClient = async (newClient) => {
-    const res = await fetch("/api/clients/new", {
+    const res = await fetch("/clients/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -164,7 +164,7 @@ const App = () => {
   }
 
   const handleCreateProject = async (newProject) => {
-    const res = await fetch("/api/projects/new", {
+    const res = await fetch("/projects/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -209,7 +209,7 @@ const App = () => {
       formData.append(field, userObj[field]);
     }
     console.log(...formData);
-    const res = await fetch(`/api/users/${userID}`, {
+    const res = await fetch(`/users/${userID}`, {
       method: "PUT",
       body: formData,
     });
@@ -231,7 +231,7 @@ const App = () => {
       formData.append(field, clientObj[field]);
     }
 
-    const res = await fetch(`/api/clients/${clientID}`, {
+    const res = await fetch(`/clients/${clientID}`, {
       method: "PUT",
       body: formData,
     });
@@ -253,7 +253,7 @@ const App = () => {
       formData.append(field, projectObj[field]);
     }
     console.log(...formData);
-    const res = await fetch(`/api/projects/${projectID}`, {
+    const res = await fetch(`/projects/${projectID}`, {
       method: "PUT",
       body: formData,
     });
@@ -273,7 +273,7 @@ const App = () => {
   // Users
   ////////////////////////////////////////////////////////
   const handleLogout = async () => {
-    const res = await fetch('/api/logout', {
+    const res = await fetch('/logout', {
       method: 'POST'
     })
     const data = await res.json()
@@ -289,7 +289,7 @@ const App = () => {
 
   useEffect(() => {
     const checkIfLoggedIn = async () => {
-      const res = await fetch("/api/is-authenticated");
+      const res = await fetch("/is-authenticated");
       const data = await res.json();
       setUser(data.user);
     };
