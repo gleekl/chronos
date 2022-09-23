@@ -36,7 +36,7 @@ def disconnect_from_db(response):
 # # # # # # # # # # # # # # # # # # # # 
 
 # List all users 
-@app.route('/users')
+@app.route('/api/users')
 def users():
     query = """
         SELECT id, first_name, last_name, email, phone, username 
@@ -48,7 +48,7 @@ def users():
     return jsonify(users)
 
 # List selected user
-@app.route('/users/<user_id>')
+@app.route('/api/users/<user_id>')
 def show_user(user_id):
     cur = g.db['cursor']
 
@@ -62,7 +62,7 @@ def show_user(user_id):
     return jsonify(user)
 
 # Update selected user
-@app.route('/users/<user_id>', methods=['PUT'])
+@app.route('/api/users/<user_id>', methods=['PUT'])
 def update_user(user_id):
     first_name = request.form['first_name']
     last_name = request.form['last_name']
@@ -94,7 +94,7 @@ def update_user(user_id):
 # # # # # # # # # # # # # # # # # # # # 
 
 # List all clients
-@app.route('/clients')
+@app.route('/api/clients')
 def clients():
     query = """
         SELECT * 
@@ -107,7 +107,7 @@ def clients():
     return jsonify(clients)
 
 # List selected client
-@app.route('/clients/<client_id>')
+@app.route('/api/clients/<client_id>')
 def show_client(client_id):
     cur = g.db['cursor']
 
@@ -121,7 +121,7 @@ def show_client(client_id):
     return jsonify(client)
 
 # Update selected client
-@app.route('/clients/<client_id>', methods=['PUT'])
+@app.route('/api/clients/<client_id>', methods=['PUT'])
 def update_client(client_id):
     first_name = request.json['first_name']
     last_name = request.json['last_name']
@@ -143,7 +143,7 @@ def update_client(client_id):
     return jsonify(client)
 
 # Make new client
-@app.route('/clients/new', methods=['POST'])
+@app.route('/api/clients/new', methods=['POST'])
 def new_client():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
@@ -168,7 +168,7 @@ def new_client():
     return jsonify(client)
 
 # Delete client
-@app.route('/clients/<client_id>', methods=['DELETE'])
+@app.route('/api/clients/<client_id>', methods=['DELETE'])
 def delete_client(client_id):
     query = """
         DELETE FROM clients
@@ -187,7 +187,7 @@ def delete_client(client_id):
 # # # # # # # # # # # # # # # # # # # # 
 
 # List all activities
-@app.route('/activities')
+@app.route('/api/activities')
 def activities():
     query = """
         SELECT * 
@@ -199,7 +199,7 @@ def activities():
     return jsonify(activities)
 
 # List selected activity
-@app.route('/activities/<activity_id>')
+@app.route('/api/activities/<activity_id>')
 def show_activity(activity_id):
     cur = g.db['cursor']
 
@@ -231,7 +231,7 @@ def update_activity(activity_id):
     return jsonify(activity)
 
 # Make new activity
-@app.route('/activities/new', methods=['POST'])
+@app.route('/api/activities/new', methods=['POST'])
 def new_activity():
     name = request.json['first_name']
 
@@ -252,7 +252,7 @@ def new_activity():
     return jsonify(client)
 
 # Delete activity
-@app.route('/activities/<activity_id>', methods=['DELETE'])
+@app.route('/api/activities/<activity_id>', methods=['DELETE'])
 def delete_activity(activity_id):
     query = """
         DELETE FROM activities
@@ -271,7 +271,7 @@ def delete_activity(activity_id):
 # # # # # # # # # # # # # # # # # # # # 
 
 # List all projects
-@app.route('/projects')
+@app.route('/api/projects')
 def projects():
     query = """
         SELECT name AS project_name, clients.company AS client_company, CONCAT(users.first_name, ' ', users.last_name) AS user, start_date, end_date, total_duration
@@ -284,7 +284,7 @@ def projects():
     return jsonify(projects)
 
 # List each project
-@app.route('/projects/<project_id>')
+@app.route('/api/projects/<project_id>')
 def show_project(project_id):
     cur = g.db['cursor']
 
@@ -300,7 +300,7 @@ def show_project(project_id):
     return jsonify(project)
 
 # Create new project
-@app.route('/projects/new', methods=['POST'])
+@app.route('/api/projects/new', methods=['POST'])
 def new_project():
     name = request.json['name']
     client_id = request.json['client_id']
@@ -325,7 +325,7 @@ def new_project():
     return jsonify(project)
 
 # Update selected project
-@app.route('/projects/<project_id>', methods=['PUT'])
+@app.route('/api/projects/<project_id>', methods=['PUT'])
 def update_project(project_id):
     name = request.json['name']
     client_id = request.json['client_id']
@@ -347,7 +347,7 @@ def update_project(project_id):
     return jsonify(project)
 
 # Delete Project
-@app.route('/projects/<project_id>', methods=['DELETE'])
+@app.route('/api/projects/<project_id>', methods=['DELETE'])
 def delete_project(project_id):
     query = """
         DELETE FROM projects
@@ -366,7 +366,7 @@ def delete_project(project_id):
 # # # # # # # # # # # # # # # # # # # # 
 
 # List all timesheets
-@app.route('/timesheets')
+@app.route('/api/timesheets')
 def timesheets():
     query = """
         SELECT timesheets.id, CONCAT(users.first_name, ' ', users.last_name) AS user, clients.company AS client, projects.name AS project, activities.name AS activity, date, duration, comments
@@ -382,7 +382,7 @@ def timesheets():
     return jsonify(timesheets)
 
 # List each timesheet
-@app.route('/timesheets/<timesheet_id>')
+@app.route('/api/timesheets/<timesheet_id>')
 def show_timesheet(timesheet_id):
     cur = g.db['cursor']
 
@@ -401,7 +401,7 @@ def show_timesheet(timesheet_id):
     return jsonify(timesheet)
 
 # Create new timesheet
-@app.route('/timesheets/new')
+@app.route('/api/timesheets/new')
 def new_timesheet():
     client_id = request.json['client_id']
     project_id = request.json['project_id']
@@ -431,7 +431,7 @@ def new_timesheet():
 # # # # # # # # # # # # # # # # # # # # 
 
 # Project Duration
-@app.route('/dashboard/projectduration')
+@app.route('/api/dashboard/projectduration')
 def project_duration():
     query = """
         SELECT name AS project, total_duration AS duration
@@ -446,7 +446,7 @@ def project_duration():
     return jsonify(project_duration)
 
 # Project Split
-@app.route('/dashboard/projectsplit')
+@app.route('/api/dashboard/projectsplit')
 def project_split():
     query = """
         SELECT CONCAT(users.first_name, ' ', users.last_name) AS user, COUNT(*) AS number_of_projects

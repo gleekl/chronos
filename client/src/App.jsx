@@ -39,35 +39,35 @@ const App = () => {
   const navigate = useNavigate();
 
   const getUsers = async () => {
-    const url = "/users";
+    const url = "/api/users";
     const res = await fetch(url);
     const data = await res.json();
     setUsers(data)
   }
 
   const getClients = async () => {
-    const url = "/clients";
+    const url = "/api/clients";
     const res = await fetch(url);
     const data = await res.json();
     setClients(data)
   }
 
   const getProjects = async () => {
-    const url = "/projects";
+    const url = "/api/projects";
     const res = await fetch(url);
     const data = await res.json();
     setProjects(data)
   }
 
   const getTimesheets = async () => {
-    const url = "/timesheets";
+    const url = "/api/timesheets";
     const res = await fetch(url);
     const data = await res.json();
     setTimesheets(data)
   }
 
   const getActivities = async () => {
-    const url = "/activities";
+    const url = "/api/activities";
     const res = await fetch(url);
     const data = await res.json();
     setActivities(data)
@@ -75,14 +75,14 @@ const App = () => {
 
   // Dashboard Chart Use
   const getProjectDuration = async () => {
-    const url = "/dashboard/projectduration";
+    const url = "/api/dashboard/projectduration";
     const res = await fetch(url);
     const data = await res.json();
     setProjectDuration(data)
   }
 
   const getProjectSplit = async () => {
-    const url = "/dashboard/projectsplit";
+    const url = "/api/dashboard/projectsplit";
     const res = await fetch(url);
     const data = await res.json();
     setProjectSplit(data)
