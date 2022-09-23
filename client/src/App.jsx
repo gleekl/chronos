@@ -132,9 +132,14 @@ const App = () => {
         },
         body: JSON.stringify(fields)
       })
-      const data = await res.json()
-      setUser(data.user)
-      navigate("/");
+      if (res.ok) {
+        const data = await res.json()
+        setUser(data.user)
+        navigate("/")
+      } else {
+        console.log(`Error when trying to ${whichForm}.`);
+      }
+
     }
   }
 
@@ -273,7 +278,7 @@ const App = () => {
     })
     const data = await res.json()
     if (data.success) setUser(null)
-    setAuthorised(false)
+    // setAuthorised(false)
     navigate('/login')
   }
 
@@ -286,7 +291,7 @@ const App = () => {
     const checkIfLoggedIn = async () => {
       const res = await fetch("/is-authenticated");
       const data = await res.json();
-      setAuthorised(data.user);
+      setUser(data.user);
     };
     if (!user) checkIfLoggedIn();
 
@@ -424,7 +429,6 @@ const App = () => {
               element={
                 <Login
                   handleSubmit={handleSubmit("login")}
-                  handleLogin={handleAuthentication}
                 />
               }
             />
