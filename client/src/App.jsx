@@ -21,28 +21,28 @@ const App = () => {
   // Logged in user
   const [user, setUser] = useState(null)
   const [authorised, setAuthorised] = useState(null);
-  // Users
-  const [users, setUsers] = useState([])
+  // Activities
+  const [activities, setActivities] = useState([])
   // Clients
   const [clients, setClients] = useState([])
   // Projects
   const [projects, setProjects] = useState([])
-  // Timesheets
-  const [timesheets, setTimesheets] = useState([])
-  // Activities
-  const [activities, setActivities] = useState([])
   // Project Duration
   const [projectDuration, setProjectDuration] = useState([])
   // Project Duration
   const [projectSplit, setProjectSplit] = useState([])
+  // Timesheets
+  const [timesheets, setTimesheets] = useState([])
+  // Users
+  const [users, setUsers] = useState([])
 
   const navigate = useNavigate();
 
-  const getUsers = async () => {
-    const url = "/api/users";
+  const getActivities = async () => {
+    const url = "/api/activities";
     const res = await fetch(url);
     const data = await res.json();
-    setUsers(data)
+    setActivities(data)
   }
 
   const getClients = async () => {
@@ -59,20 +59,6 @@ const App = () => {
     setProjects(data)
   }
 
-  const getTimesheets = async () => {
-    const url = "/api/timesheets";
-    const res = await fetch(url);
-    const data = await res.json();
-    setTimesheets(data)
-  }
-
-  const getActivities = async () => {
-    const url = "/api/activities";
-    const res = await fetch(url);
-    const data = await res.json();
-    setActivities(data)
-  }
-
   // Dashboard Chart Use
   const getProjectDuration = async () => {
     const url = "/api/dashboard/projectduration";
@@ -86,6 +72,20 @@ const App = () => {
     const res = await fetch(url);
     const data = await res.json();
     setProjectSplit(data)
+  }
+
+  const getTimesheets = async () => {
+    const url = "/api/timesheets";
+    const res = await fetch(url);
+    const data = await res.json();
+    setTimesheets(data)
+  }
+
+  const getUsers = async () => {
+    const url = "/api/users";
+    const res = await fetch(url);
+    const data = await res.json();
+    setUsers(data)
   }
 
   ////////////////////////////////////////////////////////
