@@ -92,9 +92,51 @@ def update_user(user_id):
 # Tasks
 # # # # # # # # # # # # # # # # # # # # 
 
-# List todos
-@app.route ('/api/tasks')
+# List all tasks
+@app.route('/api/tasks')
 def tasks():
+    query = """
+        SELECT * 
+        FROM tasks
+        ORDER BY id ASC
+    """
+
+    g.db['cursor'].execute(query)
+    tasks = g.db['cursor'].fetchall()
+    return jsonify(tasks)
+
+# List selected task
+@app.route('/api/tasks/<task_id>')
+def show_task(task_id):
+    query = """
+        SELECT * 
+        FROM tasks
+        WHERE tasks.id = %s
+    """
+    cur = g.db['cursor']
+    cur.execute(query, (task_id,))
+    task = cur.fetchone()
+    return jsonify(task)
+
+# Update selected task
+@app.route('/api/tasks/<tasks_id>', methods=['PUT'])
+def update_task(task_id):
+    name = request.json['name']
+
+    query = """
+        UPDATE tasks
+        SET name = %s,
+        WHERE tasks.id = %s,
+        RETURNING *
+    """
+
+    cur = g.db['cursor']
+    cur.execute(query, (name, ))
+    g.db['connection'].commit() 
+    task = g.db['cursor'].fetchone()
+    return jsonify(task)
+
+
 
 # # # # # # # # # # # # # # # # # # # # 
 # CLIENTS 
@@ -119,7 +161,8 @@ def show_client(client_id):
     cur = g.db['cursor']
 
     query = """
-        SELECT * FROM clients
+        SELECT * 
+        FROM clients
         WHERE clients.id = %s
     """
 
