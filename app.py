@@ -88,6 +88,13 @@ def update_user(user_id):
     session['user'] = user
     return jsonify(user)
 
+# # # # # # # # # # # # # # # # # # # # 
+# Tasks
+# # # # # # # # # # # # # # # # # # # # 
+
+# List todos
+@app.route ('/api/tasks')
+def tasks():
 
 # # # # # # # # # # # # # # # # # # # # 
 # CLIENTS 
