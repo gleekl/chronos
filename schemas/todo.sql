@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS todo CASCADE;
+
+CREATE TABLE todo (
+    id SERIAL PRIMARY KEY,
+    user_id SERIAL REFERENCES users (id) ON DELETE CASCADE,
+    tasks TEXT
+)

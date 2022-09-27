@@ -76,7 +76,6 @@ const NavigationBar = ({ user, authorised }) => {
                 <Toolbar />
                 <Divider />
                 <List>
-                    {user ? <p>Logged in as {user.first_name}.</p> : <p>Please sign in or register.</p>}
                     {/* Map  */}
                     {user && navItems.map(({ text, component, link }) => (
                         <NavLink to={link} className="navlink">
