@@ -20,8 +20,12 @@ import {
 
 // ----------------------------------------------------------------------
 
-const Dashboard = ({ user, users, projects, clients, projectDuration, projectSplit }) => {
+const Dashboard = ({ clients, projects, projectDuration, projectSplit, tasks, user, users }) => {
   const theme = useTheme();
+
+  const taskList = tasks.map((task) => (
+    { id: task.id, label: task.name }
+  ));
 
   return (
     <Page title="Dashboard">
@@ -50,13 +54,7 @@ const Dashboard = ({ user, users, projects, clients, projectDuration, projectSpl
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks
               title="Tasks"
-              list={[
-                { id: '1', label: 'README' },
-                { id: '2', label: 'Drink water!' },
-                { id: '3', label: 'Time travel' },
-                { id: '4', label: 'Worl Cop' },
-                { id: '5', label: 'Sprint Showcase' },
-              ]}
+              list={taskList}
             />
           </Grid>
 

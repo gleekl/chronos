@@ -31,6 +31,8 @@ const App = () => {
   const [projectDuration, setProjectDuration] = useState([])
   // Project Duration
   const [projectSplit, setProjectSplit] = useState([])
+  // Tasks
+  const [tasks, setTasks] = useState([])
   // Timesheets
   const [timesheets, setTimesheets] = useState([])
   // Users
@@ -72,6 +74,13 @@ const App = () => {
     const res = await fetch(url);
     const data = await res.json();
     setProjectSplit(data)
+  }
+
+  const getTasks = async () => {
+    const url = "/api/tasks";
+    const res = await fetch(url);
+    const data = await res.json();
+    setTasks(data)
   }
 
   const getTimesheets = async () => {
@@ -293,11 +302,12 @@ const App = () => {
     };
     if (!user) checkIfLoggedIn();
 
-    getUsers()
+    getActivities()
     getClients()
     getProjects()
+    getTasks()
     getTimesheets()
-    getActivities()
+    getUsers()
     getProjectDuration()
     getProjectSplit()
   }, [])
@@ -314,12 +324,13 @@ const App = () => {
               element={
 
                 <Dashboard
-                  user={user}
-                  users={users}
-                  projects={projects}
                   clients={clients}
+                  projects={projects}
                   projectDuration={projectDuration}
                   projectSplit={projectSplit}
+                  user={user}
+                  users={users}
+                  tasks={tasks}
                 />
 
               }
@@ -327,11 +338,11 @@ const App = () => {
             <Route
               path='/profile'
               element={
-                  <Profile
-                    user={user}
-                    users={users}
-                    handleEditUser={handleEditUser}
-                  />
+                <Profile
+                  user={user}
+                  users={users}
+                  handleEditUser={handleEditUser}
+                />
               }
             />
 
