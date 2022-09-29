@@ -83,13 +83,6 @@ const App = () => {
     setTasks(data)
   }
 
-  const getTimesheets = async () => {
-    const url = "/api/timesheets";
-    const res = await fetch(url);
-    const data = await res.json();
-    setTimesheets(data)
-  }
-
   const getUsers = async () => {
     const url = "/api/users";
     const res = await fetch(url);
@@ -295,11 +288,21 @@ const App = () => {
   };
 
   useEffect(() => {
+    const getTimesheets = async () => {
+      const url = "/api/timesheets";
+      const res = await fetch(url);
+      const data = await res.json();
+      const filteredTimesheets = data.filter((timesheet) => timesheet.user_id === user.id)
+      setTimesheets(filteredTimesheets)
+    }
+    getTimesheets()
+  }, [])
+
+  useEffect(() => {
     getActivities()
     getClients()
     getProjects()
     getTasks()
-    getTimesheets()
     getUsers()
     getProjectDuration()
     getProjectSplit()
@@ -313,9 +316,6 @@ const App = () => {
     };
     if (!user) checkIfLoggedIn();
   }, [user])
-  
-  console.log(user);
-  console.log(timesheets);
 
   return (
     <ThemeProvider>

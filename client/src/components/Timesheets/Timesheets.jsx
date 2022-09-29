@@ -326,11 +326,11 @@ const Timesheets = ({ timesheets, user }) => {
                     const isItemSelected = isSelected(timesheet.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
-                    console.log(user.id);
-                    console.log(timesheet.user_id);
-                    if (user.id === timesheet.user_id) {
-                      console.log("There are some timesheets made by user.");
-                    }
+                    // if (user.id === timesheet.user_id) {
+                    //   console.log("IDs match.");
+                    // } else {
+                    //   console.log("IDs do not match.");
+                    // }
                     return (
                       <TableRow
                         hover
@@ -368,6 +368,51 @@ const Timesheets = ({ timesheets, user }) => {
                       </TableRow>
                     );
                   })}
+                  
+                {/* {timesheets.map((timesheet, index) => {
+                  const isItemSelected = isSelected(timesheet.name);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+
+                  if (user.id === timesheet.user_id) {
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, timesheet.name)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={timesheet.name}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              'aria-labelledby': labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {timesheet.user}
+                        </TableCell>
+                        <TableCell align="left">{timesheet.client}</TableCell>
+                        <TableCell align="left">{timesheet.project}</TableCell>
+                        <TableCell align="left">{timesheet.activity}</TableCell>
+                        <TableCell align="left">{timesheet.date}</TableCell>
+                        <TableCell align="left">{timesheet.duration}</TableCell>
+                        <TableCell align="left"><Stopwatch /></TableCell>
+                        <TableCell align="left">{timesheet.comments}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                })} */}
+
                 {emptyRows > 0 && (
                   <TableRow
                     style={{
@@ -381,7 +426,7 @@ const Timesheets = ({ timesheets, user }) => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, {value: timesheets.length, label: "All"}]}
+            rowsPerPageOptions={[5, 10, { value: timesheets.length, label: "All" }]}
             component="div"
             count={timesheets.length}
             rowsPerPage={rowsPerPage}
