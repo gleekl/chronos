@@ -245,7 +245,7 @@ const App = () => {
     });
 
     if (res.ok) {
-      getUsers();
+      getClients();
       let updatedClient = { ...users.find((client) => client._id === clientID) };
       const index = clients.findIndex((client) => client._id === clientID);
       setClients([...clients.slice(0, index), updatedClient, ...clients.slice(index + 1)]);
@@ -311,6 +311,9 @@ const App = () => {
     getProjectDuration()
     getProjectSplit()
   }, [])
+
+  console.log(user);
+  console.log(tasks);
 
   return (
     <ThemeProvider>

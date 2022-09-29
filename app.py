@@ -95,10 +95,15 @@ def update_user(user_id):
 # List all tasks
 @app.route('/api/tasks')
 def tasks():
+    # query = """
+    #     SELECT * 
+    #     FROM tasks
+    #     ORDER BY id ASC
+    # """
     query = """
-        SELECT * 
+        SELECT tasks.id, CONCAT(users.first_name, ' ', users.last_name) AS user, tasks.name
         FROM tasks
-        ORDER BY id ASC
+        JOIN users ON tasks.user_id = users.id;
     """
 
     g.db['cursor'].execute(query)
@@ -108,10 +113,16 @@ def tasks():
 # List selected task
 @app.route('/api/tasks/<task_id>')
 def show_task(task_id):
+    # query = """
+    #     SELECT * 
+    #     FROM tasks
+    #     WHERE tasks.id = %s
+    # """
     query = """
-        SELECT * 
+        SELECT tasks.id, CONCAT(users.first_name, ' ', users.last_name) AS user, tasks.name
         FROM tasks
-        WHERE tasks.id = %s
+        JOIN users ON tasks.user_id = users.id;
+        WHERE users.id = %s
     """
     cur = g.db['cursor']
     cur.execute(query, (task_id,))
@@ -173,11 +184,11 @@ def show_client(client_id):
 # Update selected client
 @app.route('/api/clients/<client_id>', methods=['PUT'])
 def update_client(client_id):
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    email = request.json['email']
-    phone = request.json['phone']
-    company = request.json['company']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    phone = request.form['phone']
+    company = request.form['company']
 
     query = """
         UPDATE clients
@@ -434,8 +445,6 @@ def timesheets():
 # List each timesheet
 @app.route('/api/timesheets/<timesheet_id>')
 def show_timesheet(timesheet_id):
-    cur = g.db['cursor']
-
     query = """
         SELECT timesheets.id, CONCAT(users.first_name, ' ', users.last_name) AS user, clients.company AS client, projects.name AS project, activities.name AS activity, date, duration, comments
         FROM timesheets
@@ -446,6 +455,7 @@ def show_timesheet(timesheet_id):
         WHERE timesheets.id = %s
     """
 
+    cur = g.db['cursor']
     cur.execute(query, (timesheet_id,))
     timesheet = cur.fetchone()
     return jsonify(timesheet)
