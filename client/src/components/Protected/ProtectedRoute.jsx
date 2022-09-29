@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ authorised, children }) => {
-  if (authorised === true) {
+const ProtectedRoute = ({ user, children }) => {
+  if (user) {
     return children
-  } else if (authorised === false) {
+  } else if (user === null) {
     return <Navigate to="/login" />
   } else {
     return <p>Loading..</p>

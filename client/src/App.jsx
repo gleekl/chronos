@@ -132,28 +132,8 @@ const App = () => {
 
   // }, [projectSplit])
 
-  const handleSubmit = (whichForm) => {
-    return async (fields) => {
-      const res = await fetch(`/${whichForm}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(fields)
-      })
-      if (res.ok) {
-        const data = await res.json()
-        setUser(data.user)
-        navigate("/")
-      } else {
-        console.log(`Error when trying to ${whichForm}.`);
-      }
-
-    }
-  }
-
   const handleCreateClient = async (newClient) => {
-    const res = await fetch("/clients/new", {
+    const res = await fetch("/api/clients/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -173,7 +153,7 @@ const App = () => {
   }
 
   const handleCreateProject = async (newProject) => {
-    const res = await fetch("/projects/new", {
+    const res = await fetch("/api/projects/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -217,7 +197,7 @@ const App = () => {
     for (let field in userObj) {
       formData.append(field, userObj[field]);
     }
-    const res = await fetch(`/users/${userID}`, {
+    const res = await fetch(`/api/users/${userID}`, {
       method: "PUT",
       body: formData,
     });
@@ -279,13 +259,33 @@ const App = () => {
   ////////////////////////////////////////////////////////
   // Users
   ////////////////////////////////////////////////////////
+  const handleSubmit = (whichForm) => {
+    return async (fields) => {
+      const res = await fetch(`/${whichForm}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fields)
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setUser(data.user)
+        navigate("/")
+      } else {
+        console.log(`Error when trying to ${whichForm}.`);
+      }
+
+    }
+  }
+
   const handleLogout = async () => {
     const res = await fetch('/logout', {
       method: 'POST'
     })
     const data = await res.json()
     if (data.success) setUser(null)
-    // setAuthorised(false)
     navigate('/login')
   }
 
@@ -295,13 +295,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    const checkIfLoggedIn = async () => {
-      const res = await fetch("/is-authenticated");
-      const data = await res.json();
-      setUser(data.user);
-    };
-    if (!user) checkIfLoggedIn();
-
     getActivities()
     getClients()
     getProjects()
@@ -312,8 +305,15 @@ const App = () => {
     getProjectSplit()
   }, [])
 
+  useEffect(() => {
+    const checkIfLoggedIn = async () => {
+      const res = await fetch("/is-authenticated");
+      const data = await res.json();
+      setUser(data.user);
+    };
+    if (!user) checkIfLoggedIn();
+  }, [user])
   console.log(user);
-  console.log(tasks);
 
   return (
     <ThemeProvider>
@@ -325,17 +325,17 @@ const App = () => {
             <Route
               path='/'
               element={
-
-                <Dashboard
-                  clients={clients}
-                  projects={projects}
-                  projectDuration={projectDuration}
-                  projectSplit={projectSplit}
-                  user={user}
-                  users={users}
-                  tasks={tasks}
-                />
-
+                <ProtectedRoute user={user} >
+                  <Dashboard
+                    clients={clients}
+                    projects={projects}
+                    projectDuration={projectDuration}
+                    projectSplit={projectSplit}
+                    user={user}
+                    users={users}
+                    tasks={tasks}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route
@@ -353,11 +353,11 @@ const App = () => {
             <Route
               path='/timesheets'
               element={
-
-                <Timesheets
-                  timesheets={timesheets}
-                />
-
+                <ProtectedRoute user={user} >
+                  <Timesheets
+                    timesheets={timesheets}
+                  />
+                </ProtectedRoute>
               }
             />
 
@@ -365,10 +365,11 @@ const App = () => {
             <Route
               path='/users'
               element={
-
-                <Users
-                  users={users}
-                />
+                <ProtectedRoute user={user} >
+                  <Users
+                    users={users}
+                  />
+                </ProtectedRoute>
 
               }
             />
@@ -377,11 +378,11 @@ const App = () => {
             <Route
               path='/clients'
               element={
-
-                <Clients
-                  clients={clients}
-                />
-
+                <ProtectedRoute user={user} >
+                  <Clients
+                    clients={clients}
+                  />
+                </ProtectedRoute>
               }
             />
 
@@ -389,12 +390,12 @@ const App = () => {
             <Route
               path='/clients/new'
               element={
-
-                <CreateClient
-                  clients={clients}
-                  handleCreateClient={handleCreateClient}
-                />
-
+                <ProtectedRoute user={user} >
+                  <CreateClient
+                    clients={clients}
+                    handleCreateClient={handleCreateClient}
+                  />
+                </ProtectedRoute>
               }
             />
 
@@ -402,11 +403,11 @@ const App = () => {
             <Route
               path='/projects'
               element={
-
-                <Projects
-                  projects={projects}
-                />
-
+                <ProtectedRoute user={user} >
+                  <Projects
+                    projects={projects}
+                  />
+                </ProtectedRoute>
               }
             />
 
@@ -414,14 +415,14 @@ const App = () => {
             <Route
               path='/projects/new'
               element={
-
-                <CreateProject
-                  projects={projects}
-                  user={user}
-                  clients={clients}
-                  handleCreateProject={handleCreateProject}
-                />
-
+                <ProtectedRoute user={user} >
+                  <CreateProject
+                    projects={projects}
+                    user={user}
+                    clients={clients}
+                    handleCreateProject={handleCreateProject}
+                  />
+                </ProtectedRoute>
               }
             />
 
@@ -431,6 +432,7 @@ const App = () => {
               element={
                 <Register
                   handleSubmit={handleSubmit("register")}
+                  user={user}
                 />
               }
             />
@@ -441,6 +443,7 @@ const App = () => {
               element={
                 <Login
                   handleSubmit={handleSubmit("login")}
+                  user={user}
                 />
               }
             />

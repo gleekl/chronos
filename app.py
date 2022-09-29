@@ -184,11 +184,11 @@ def show_client(client_id):
 # Update selected client
 @app.route('/api/clients/<client_id>', methods=['PUT'])
 def update_client(client_id):
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    email = request.form['email']
-    phone = request.form['phone']
-    company = request.form['company']
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
+    email = request.json['email']
+    phone = request.json['phone']
+    company = request.json['company']
 
     query = """
         UPDATE clients
@@ -600,7 +600,7 @@ def logout():
 def is_authenticated():
     user = session.get('user', None)
     if user:
-        return jsonify(success=True, user=user)
+        return jsonify(success=True, msg='User is logged in.', user=user)
     else:
         return jsonify(success=False, msg='User is not logged in.')
 
