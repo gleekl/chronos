@@ -28,3 +28,6 @@ INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, durat
 INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, duration, comments) VALUES (6, 7, 28, 6, '2021-10-31', 431, 'massa');
 INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, duration, comments) VALUES (5, 9, 22, 4, '2021-11-17', 581, 'nullam molestie nibh in');
 INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, duration, comments) VALUES (10, 2, 19, 8, '2021-09-08', 476, 'odio justo sollicitudin ut');
+INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, duration, comments) VALUES (11, 2, 19, 8, '2021-09-08', 476, 'suscipit ligula in lacus');
+INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, duration, comments) VALUES (11, 3, 1, 8, '2021-09-08', 476, 'ullamcorper purus sit');
+INSERT INTO timesheets (user_id, client_id, project_id, activity_id, date, duration, comments) VALUES (11, 2, 19, 8, '2021-09-08', 476, 'massa');

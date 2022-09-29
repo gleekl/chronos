@@ -313,7 +313,9 @@ const App = () => {
     };
     if (!user) checkIfLoggedIn();
   }, [user])
+  
   console.log(user);
+  console.log(timesheets);
 
   return (
     <ThemeProvider>
@@ -356,6 +358,7 @@ const App = () => {
                 <ProtectedRoute user={user} >
                   <Timesheets
                     timesheets={timesheets}
+                    user={user}
                   />
                 </ProtectedRoute>
               }

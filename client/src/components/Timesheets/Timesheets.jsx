@@ -236,7 +236,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const Timesheets = ({ timesheets }) => {
+const Timesheets = ({ timesheets, user }) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -326,6 +326,11 @@ const Timesheets = ({ timesheets }) => {
                     const isItemSelected = isSelected(timesheet.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
+                    console.log(user.id);
+                    console.log(timesheet.user_id);
+                    if (user.id === timesheet.user_id) {
+                      console.log("There are some timesheets made by user.");
+                    }
                     return (
                       <TableRow
                         hover
@@ -376,7 +381,7 @@ const Timesheets = ({ timesheets }) => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 30]}
+            rowsPerPageOptions={[5, 10, {value: timesheets.length, label: "All"}]}
             component="div"
             count={timesheets.length}
             rowsPerPage={rowsPerPage}

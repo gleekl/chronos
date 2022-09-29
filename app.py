@@ -430,7 +430,7 @@ def delete_project(project_id):
 @app.route('/api/timesheets')
 def timesheets():
     query = """
-        SELECT timesheets.id, CONCAT(users.first_name, ' ', users.last_name) AS user, clients.company AS client, projects.name AS project, activities.name AS activity, date, duration, comments
+        SELECT timesheets.id, CONCAT(users.first_name, ' ', users.last_name) AS user, users.id AS user_id, clients.company AS client, projects.name AS project, activities.name AS activity, date, duration, comments
         FROM timesheets
         JOIN users ON timesheets.user_id = users.id
         JOIN clients ON timesheets.client_id = clients.id
