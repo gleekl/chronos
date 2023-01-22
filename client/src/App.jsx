@@ -83,6 +83,14 @@ const App = () => {
     setTasks(data)
   }
 
+  const getUser = async () => {
+    const url = "/api/users";
+    const res = await fetch(url);
+    const data = await res.json();
+    const filteredUser = data.filter((currentUser) => console.log(currentUser))
+    setUsers(data)
+  }
+
   const getUsers = async () => {
     const url = "/api/users";
     const res = await fetch(url);
@@ -296,7 +304,7 @@ const App = () => {
       setTimesheets(filteredTimesheets)
     }
     getTimesheets()
-  }, [])
+  }, [timesheets])
 
   useEffect(() => {
     getActivities()
@@ -315,7 +323,7 @@ const App = () => {
       setUser(data.user);
     };
     if (!user) checkIfLoggedIn();
-  }, [user])
+  }, [])
 
   return (
     <ThemeProvider>

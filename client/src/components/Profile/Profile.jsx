@@ -6,7 +6,6 @@ import ProfileDetails from './ProfileDetails';
 import ProfileForm from './ProfileForm';
 
 const Profile = ({ user, users, handleEditUser }) => {
-  // const user = users.find
 
   return (
     <>
